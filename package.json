@@ -1,0 +1,46 @@
+{
+  "name": "mongo-rxjs-observable",
+  "version": "0.1.0",
+  "description": "RxJS observables for Meteor API and Mongo collections",
+  "keywords": [
+    "rxjs",
+    "angular",
+    "angular2",
+    "meteor",
+    "mongo",
+    "typescript"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "typings": "typings i",
+    "prebuild": "npm run typings && npm run lint",
+    "build": "npm run build-only",
+    "build-only": "tsc || echo not ok",
+    "lint": "tslint modules/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Urigo/mongo-rxjs-observable.git"
+  },
+  "author": "Angular2-Meteor (https://github.com/Urigo/angular2-meteor)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Urigo/mongo-rxjs-observable/issues"
+  },
+  "homepage": "http://www.angular-meteor.com",
+  "peerDependencies": {
+    "rxjs": "5.0.0-beta.11"
+  },
+  "devDependencies": {
+    "es6-shim": "^0.35.0",
+    "zone.js": "^0.6.12",
+    "rxjs": "5.0.0-beta.11",
+    "ghooks": "^1.2.1",
+    "validate-commit-msg": "^2.6.1",
+    "conventional-changelog-cli": "^1.2.0",
+    "tsc": "^1.20150623.0",
+    "tslint": "^3.6.0",
+    "typescript": "^1.8.0",
+    "typings": "^1.3.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "diagnostics": false
+  },
+  "files": [
+    "../typings/main.d.ts"
+  ]
+}
