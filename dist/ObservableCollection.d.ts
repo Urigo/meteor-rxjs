@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ObservableCursor } from './observable-cursor';
+import { ObservableCursor } from './ObservableCursor';
 import Selector = Mongo.Selector;
 import ObjectID = Mongo.ObjectID;
 import SortSpecifier = Mongo.SortSpecifier;

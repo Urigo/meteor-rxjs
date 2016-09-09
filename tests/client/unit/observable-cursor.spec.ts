@@ -1,7 +1,7 @@
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Observable} from 'rxjs';
-import {ObservableCursor} from 'mongo-rxjs-observable';
+import {ObservableCursor} from 'meteor-rxjs';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/count';

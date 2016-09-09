@@ -1,7 +1,7 @@
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Observable} from 'rxjs';
-import {MeteorObservable} from 'mongo-rxjs-observable';
+import {MeteorObservable} from 'meteor-rxjs';
 
 import 'zone.js/dist/zone.js';
 

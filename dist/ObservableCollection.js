@@ -1,6 +1,6 @@
 "use strict";
 var rxjs_1 = require('rxjs');
-var observable_cursor_1 = require('./observable-cursor');
+var ObservableCursor_1 = require('./ObservableCursor');
 var MongoObservable;
 (function (MongoObservable) {
     'use strict';
@@ -77,7 +77,7 @@ var MongoObservable;
         };
         Collection.prototype.find = function (selector, options) {
             var cursor = this._collection.find(this._collection, arguments);
-            return observable_cursor_1.ObservableCursor.create(cursor);
+            return ObservableCursor_1.ObservableCursor.create(cursor);
         };
         Collection.prototype.findOne = function (selector, options) {
             return this._collection.findOne.apply(this._collection, arguments);

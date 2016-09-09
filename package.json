@@ -1,7 +1,7 @@
 {
-  "name": "mongo-rxjs-observable",
+  "name": "meteor-rxjs",
   "version": "0.1.0",
-  "description": "RxJS observables for Meteor API and Mongo collections",
+  "description": "Use Meteor API in RxJS style",
   "keywords": [
     "rxjs",
     "angular",
