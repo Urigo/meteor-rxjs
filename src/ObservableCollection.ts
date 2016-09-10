@@ -129,7 +129,7 @@ export module MongoObservable {
       reactive?: boolean;
       transform?: Function;
     }): ObservableCursor<T> {
-      const cursor = this._collection.find(
+      const cursor = this._collection.find.apply(
         this._collection, arguments);
       return ObservableCursor.create<T>(cursor);
     }

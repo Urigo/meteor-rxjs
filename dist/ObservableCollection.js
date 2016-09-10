@@ -76,7 +76,7 @@ var MongoObservable;
             return obs;
         };
         Collection.prototype.find = function (selector, options) {
-            var cursor = this._collection.find(this._collection, arguments);
+            var cursor = this._collection.find.apply(this._collection, arguments);
             return ObservableCursor_1.ObservableCursor.create(cursor);
         };
         Collection.prototype.findOne = function (selector, options) {
