@@ -11,6 +11,8 @@
     "typescript"
   ],
   "main": "dist/index.js",
+  "browser": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "typings": "typings i",
     "prebuild": "npm run typings && npm run lint",
