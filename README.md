@@ -1,12 +1,12 @@
 # Meteor + RxJS
 Use Meteor API in the RxJS style.
 
-One of Meteor’s killer features is the reactive data integration of the server and client built upon the MongoDB oplog, which is, in other words, continues and immediate data interchange between these two tiers. At the same time, to simplify complexity dealing with the reactive data sources is what RxJS was designed and built for. So combing RxJS and Meteor API, we are bringing together best parts of two worlds.
+One of Meteor’s killer features is the reactive data integration of the server and client built upon the MongoDB oplog, which is, in other words, continues and immediate data interchange between these two tiers. At the same time, to simplify complexity that dealing with the reactive data sources sometimes has is what RxJS was designed and built for. So combing RxJS and Meteor API, we are bringing together best parts of two worlds.
 
 ## Mongo Cursor Observable
 
 As soon as you install this package (`npm install meteor-rxjs`), you have ability to use a special Mongo collection class that works
-with cursor observables instead of the ordinary Mongo cursors. In other words, one can subscribe on the query data updates now as follows:
+with cursor observables instead of the ordinary Mongo cursors. In other words, one can subscribe on the Mongo cursor's data updates now as follows:
 
 ```ts
 
@@ -50,13 +50,15 @@ const Tasks = new MongoObservable.Collection<Task>('tasks');
   selector: 'task-list',
   template: `<ul><li *ngFor="let task of tasks | async"></li></ul>`
 })
-class List {
+class Tasks {
   tasks = Tasks.find();
 }
 
 ````
 
-`meteor-rxjs` implements and exposes a special Zone operator for the Angular 2 users' convenience. It might be helpful if one wants to control when UI updates are made. For example, we can improve performance of the above component by debouncing UI updates as follows:
+### Zone operator
+
+`meteor-rxjs` implements and exposes a special Zone operator for the Angular 2 users' convenience. It might be helpful if one wants to control when UI updates are made. For example, we can improve performance of the above `Tasks` component by debouncing UI updates as follows:
 
 ```ts
 
