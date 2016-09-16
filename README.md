@@ -1,7 +1,7 @@
 # Meteor + RxJS
 Use Meteor API in the RxJS style.
 
-One of Meteor’s killer features is the reactive data integration of the server and client built upon the MongoDB oplog, which is, in other words, continues and immediate data interchange between these two tiers. At the same time, to simplify complexity that dealing with the reactive data sources sometimes has is what RxJS was designed and built for. So combing RxJS and Meteor API, we are bringing together best parts of two worlds.
+One of Meteor’s killer features is a reactive data integration of the server and client built with the help of MongoDB oplog, which is, in other words, continues and almost immediate data interchange between these two tiers. At the same time, to simplify complexity that dealing with reactive data sources sometimes has is what RxJS is designed and built for. So combing RxJS and Meteor API, we are bringing together best parts of two worlds.
 
 ## Mongo Cursor Observable
 
@@ -37,8 +37,8 @@ Tasks.find({checked: false})
 
 ## Usage in Angular 2
 
-Angular 2 has tight integration with RxJS since support of the reactive UI updates is what Angular 2 architecture is designed for.
-One of its realization is `AsyncPipe` which is supposed to be used with RxJS observables.
+Angular 2 has tight integration with RxJS since Angular 2 is desinged to support reactive UI updates.
+One of the realizations of this integration is `AsyncPipe`, which is supposed to be used with RxJS observables.
 
 In order to subscribe on the Mongo cursor observable's updates and iterate through the returned list of docs in Angular 2, one can use `AsyncPipe` in an Angular 2 component as follows:
 
