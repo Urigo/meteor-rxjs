@@ -6,7 +6,7 @@ export declare class ObservableCursor<T> extends Observable<T[]> {
     private _observers;
     static create<T>(cursor: Mongo.Cursor<T>): ObservableCursor<T>;
     constructor(cursor: Mongo.Cursor<T>);
-    cursor: Mongo.Cursor<T>;
+    readonly cursor: Mongo.Cursor<T>;
     stop(): void;
     dispose(): void;
     fetch(): Array<T>;

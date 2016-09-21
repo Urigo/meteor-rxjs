@@ -1,0 +1,25 @@
+language: node_js
+
+node_js:
+  - "5"
+
+cache:
+  directories:
+    # cache node modules
+    - node_modules
+
+notifications:
+  # disable email notification
+  email: false
+
+services:
+  - mongodb
+
+install:
+  - curl https://install.meteor.com | /bin/sh
+
+script:
+  # remove unused node modules from cache
+  - npm prune
+
+sudo: required
