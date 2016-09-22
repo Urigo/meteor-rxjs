@@ -25,11 +25,19 @@ export module MongoObservable {
     transform ? : Function;
   }
 
+  export function fromExisting<T>(collection: Mongo.Collection<T>) {
+    return new MongoObservable.Collection(collection);
+  }
+
   export class Collection<T> {
     private _collection: Mongo.Collection<T>;
 
-    constructor(name: string, options?: ConstructorOptions) {
-      this._collection = new Mongo.Collection<T>(name, options);
+    constructor(nameOrExisting: string | Mongo.Collection<T>, options?: ConstructorOptions) {
+      if (typeof nameOrExisting === 'string') {
+        this._collection = new Mongo.Collection<T>(nameOrExisting, options);
+      } else {
+        this._collection = nameOrExisting;
+      }
     }
 
     get collection(): Mongo.Collection<T> {
@@ -147,13 +155,13 @@ export module MongoObservable {
 
     private _createObservable<T>(observers: Subscriber<T>[]) {
       return Observable.create((observer: Subscriber<T>) => {
-         observers.push(observer);
-         return () => {
-           let index = observers.indexOf(observer);
-           if (index !== -1) {
-             observers.splice(index, 1);
-           }
-         };
+        observers.push(observer);
+        return () => {
+          let index = observers.indexOf(observer);
+          if (index !== -1) {
+            observers.splice(index, 1);
+          }
+        };
       });
     }
   }
