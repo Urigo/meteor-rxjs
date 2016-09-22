@@ -25,7 +25,7 @@ export module MongoObservable {
     transform ? : Function;
   }
 
-  export function create<T>(collection: Mongo.Collection<T>) {
+  export function fromExisting<T>(collection: Mongo.Collection<T>) {
     return new MongoObservable.Collection(collection);
   }
 

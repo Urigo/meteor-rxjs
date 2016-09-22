@@ -4,10 +4,10 @@ var ObservableCursor_1 = require('./ObservableCursor');
 var MongoObservable;
 (function (MongoObservable) {
     'use strict';
-    function create(collection) {
+    function fromExisting(collection) {
         return new MongoObservable.Collection(collection);
     }
-    MongoObservable.create = create;
+    MongoObservable.fromExisting = fromExisting;
     var Collection = (function () {
         function Collection(nameOrExisting, options) {
             if (typeof nameOrExisting === 'string') {
