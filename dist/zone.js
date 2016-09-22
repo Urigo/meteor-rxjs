@@ -30,6 +30,12 @@ var ZoneSubscriber = (function (_super) {
             _this.destination.next(value);
         });
     };
+    ZoneSubscriber.prototype._complete = function () {
+        var _this = this;
+        this.zone.run(function () {
+            _this.destination.complete();
+        });
+    };
     ZoneSubscriber.prototype._error = function (err) {
         var _this = this;
         this.zone.run(function () {
