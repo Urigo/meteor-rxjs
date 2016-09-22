@@ -52,7 +52,6 @@ var MeteorObservable = (function () {
         return rxjs_1.Observable.create(function (observer) {
             var handler = Tracker.autorun(function (computation) {
                 observer.next(computation);
-                observer.complete();
             });
             return function () { return handler.stop(); };
         });

@@ -55,7 +55,6 @@ export class MeteorObservable {
     return Observable.create((observer: Subscriber<Meteor.Error | Tracker.Computation>) => {
       let handler = Tracker.autorun((computation: Tracker.Computation) => {
         observer.next(computation);
-        observer.complete();
       });
 
       return () => handler.stop();
