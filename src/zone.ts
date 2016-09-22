@@ -28,6 +28,12 @@ class ZoneSubscriber<T> extends Subscriber<T> {
     });
   }
 
+  protected _complete() {
+    this.zone.run(() => {
+      this.destination.complete();
+    });
+  }
+
   protected _error(err?: any) {
     this.zone.run(() => {
       this.destination.error(err);
