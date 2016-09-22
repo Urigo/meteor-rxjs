@@ -25,12 +25,12 @@ export module MongoObservable {
     transform ? : Function;
   }
 
+  export function create<T>(collection: Mongo.Collection<T>) {
+    return new MongoObservable.Collection(collection);
+  }
+
   export class Collection<T> {
     private _collection: Mongo.Collection<T>;
-
-    static fromExisting<T>(collection: Mongo.Collection<T>) {
-      return new MongoObservable.Collection(collection);
-    }
 
     constructor(nameOrExisting: string | Mongo.Collection<T>, options?: ConstructorOptions) {
       if (typeof nameOrExisting === 'string') {

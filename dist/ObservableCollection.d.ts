@@ -18,9 +18,10 @@ export declare module MongoObservable {
         fetch?: string[];
         transform?: Function;
     }
+    function create<T>(collection: Mongo.Collection<T>): Collection<T>;
     class Collection<T> {
         private _collection;
-        constructor(name: string, options?: ConstructorOptions);
+        constructor(nameOrExisting: string | Mongo.Collection<T>, options?: ConstructorOptions);
         readonly collection: Mongo.Collection<T>;
         allow(options: AllowDenyOptionsObject<T>): boolean;
         deny(options: AllowDenyOptionsObject<T>): boolean;
