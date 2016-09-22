@@ -39,14 +39,21 @@ var MeteorObservable = (function () {
             var handler = Meteor.subscribe.apply(Meteor, [name].concat(args.concat([{
                     onError: function (error) {
                         observer.error(error);
-                        observer.complete();
                     },
                     onReady: function () {
                         observer.next();
-                        observer.complete();
                     }
                 }
             ])));
+            return function () { return handler.stop(); };
+        });
+    };
+    MeteorObservable.autorun = function () {
+        return rxjs_1.Observable.create(function (observer) {
+            var handler = Tracker.autorun(function (computation) {
+                observer.next(computation);
+                observer.complete();
+            });
             return function () { return handler.stop(); };
         });
     };

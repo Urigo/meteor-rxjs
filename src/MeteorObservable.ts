@@ -1,7 +1,6 @@
 'use strict';
 
 import {Observable, Subscriber} from 'rxjs';
-
 import {isMeteorCallbacks} from './utils';
 
 function throwInvalidCallback(method: string) {
@@ -41,14 +40,23 @@ export class MeteorObservable {
       let handler = Meteor.subscribe(name, ...args.concat([{
           onError: (error: Meteor.Error) => {
             observer.error(error);
-            observer.complete();
           },
           onReady: () => {
             observer.next();
-            observer.complete();
           }
         }
       ]));
+
+      return () => handler.stop();
+    });
+  }
+
+  public static autorun(): Observable<Tracker.Computation> {
+    return Observable.create((observer: Subscriber<Meteor.Error | Tracker.Computation>) => {
+      let handler = Tracker.autorun((computation: Tracker.Computation) => {
+        observer.next(computation);
+        observer.complete();
+      });
 
       return () => handler.stop();
     });
