@@ -5,8 +5,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var rxjs_1 = require('rxjs');
+var utils_1 = require('./utils');
 function zone(zone) {
-    return this.lift(new ZoneOperator(zone || Zone.current));
+    return this.lift(new ZoneOperator(zone || utils_1.getZone()));
 }
 exports.zone = zone;
 var ZoneOperator = (function () {

@@ -1,6 +1,7 @@
 "use strict";
 var rxjs_1 = require('rxjs');
 var ObservableCursor_1 = require('./ObservableCursor');
+var utils_1 = require('./utils');
 var MongoObservable;
 (function (MongoObservable) {
     'use strict';
@@ -10,11 +11,11 @@ var MongoObservable;
     MongoObservable.fromExisting = fromExisting;
     var Collection = (function () {
         function Collection(nameOrExisting, options) {
-            if (typeof nameOrExisting === 'string') {
-                this._collection = new Mongo.Collection(nameOrExisting, options);
+            if (nameOrExisting instanceof Mongo.Collection) {
+                this._collection = nameOrExisting;
             }
             else {
-                this._collection = nameOrExisting;
+                this._collection = new Mongo.Collection(nameOrExisting, options);
             }
         }
         Object.defineProperty(Collection.prototype, "collection", {
@@ -95,10 +96,7 @@ var MongoObservable;
             return rxjs_1.Observable.create(function (observer) {
                 observers.push(observer);
                 return function () {
-                    var index = observers.indexOf(observer);
-                    if (index !== -1) {
-                        observers.splice(index, 1);
-                    }
+                    utils_1.removeObserver(observers, observer);
                 };
             });
         };

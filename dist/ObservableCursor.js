@@ -16,19 +16,14 @@ var ObservableCursor = (function (_super) {
                 _this._hCursor = _this._observeCursor(cursor);
             }
             return function () {
-                var index = _this._observers.indexOf(observer);
-                if (index !== -1) {
-                    _this._observers.splice(index, 1);
-                }
-                if (!_this._observers.length) {
-                    _this.stop();
-                }
+                utils_1.removeObserver(_this._observers, observer, function () { return _this.stop(); });
             };
         });
         this._data = [];
         this._observers = [];
         _.extend(this, _.omit(cursor, 'count', 'map'));
         this._cursor = cursor;
+        this._zone = utils_1.forkZone();
     }
     ObservableCursor.create = function (cursor) {
         return new ObservableCursor(cursor);
@@ -41,10 +36,13 @@ var ObservableCursor = (function (_super) {
         configurable: true
     });
     ObservableCursor.prototype.stop = function () {
+        var _this = this;
+        this._zone.run(function () {
+            _this._runComplete();
+        });
         if (this._hCursor) {
             this._hCursor.stop();
         }
-        this._runComplete();
         this._hCursor = null;
     };
     ObservableCursor.prototype.dispose = function () {
@@ -85,7 +83,10 @@ var ObservableCursor = (function (_super) {
     };
     ;
     ObservableCursor.prototype._handleChange = function () {
-        this._runNext(this._data);
+        var _this = this;
+        this._zone.run(function () {
+            _this._runNext(_this._data);
+        });
     };
     ;
     ObservableCursor.prototype._observeCursor = function (cursor) {

@@ -2,9 +2,10 @@
 
 import {Observable, Subscriber} from 'rxjs';
 
-import {gZone} from './utils';
+import {gZone, forkZone, removeObserver} from './utils';
 
 export class ObservableCursor<T> extends Observable<T[]> {
+  private _zone: Zone;
   private _data: Array <T> = [];
   private _cursor: Mongo.Cursor<T>;
   private _hCursor: Meteor.LiveQueryHandle;
@@ -23,17 +24,13 @@ export class ObservableCursor<T> extends Observable<T[]> {
       }
 
       return () => {
-        let index = this._observers.indexOf(observer);
-        if (index !== -1) {
-          this._observers.splice(index, 1);
-        }
-        if (!this._observers.length) {
-          this.stop();
-        }
+        removeObserver(this._observers,
+          observer, () => this.stop());
       };
     });
     _.extend(this, _.omit(cursor, 'count', 'map'));
     this._cursor = cursor;
+    this._zone = forkZone();
   }
 
   get cursor(): Mongo.Cursor<T> {
@@ -41,10 +38,12 @@ export class ObservableCursor<T> extends Observable<T[]> {
   }
 
   stop() {
+    this._zone.run(() => {
+      this._runComplete();
+    });
     if (this._hCursor) {
       this._hCursor.stop();
     }
-    this._runComplete();
     this._hCursor = null;
   }
 
@@ -93,7 +92,9 @@ export class ObservableCursor<T> extends Observable<T[]> {
   };
 
   _handleChange() {
-    this._runNext(this._data);
+    this._zone.run(() => {
+      this._runNext(this._data);
+    });
   };
 
   _observeCursor(cursor: Mongo.Cursor<T>) {

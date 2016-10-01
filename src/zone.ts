@@ -4,8 +4,10 @@ import {Observable, Operator, Subscriber} from 'rxjs';
 
 import {TeardownLogic} from 'rxjs/Subscription';
 
+import {getZone} from './utils';
+
 export function zone<T>(zone?: Zone): Observable<T> {
-  return this.lift(new ZoneOperator(zone || Zone.current));
+  return this.lift(new ZoneOperator(zone || getZone()));
 }
 
 class ZoneOperator<T> implements Operator<T, T> {

@@ -7,7 +7,6 @@ const expect = chai.expect;
 
 describe('MeteorObservable', () => {
   describe('call', () => {
-
     it('Should return RxJS Observable when using "call"', () => {
       let returnValue = MeteorObservable.call('testMethod');
       expect(returnValue instanceof Observable).to.equal(true);
@@ -49,6 +48,10 @@ describe('MeteorObservable', () => {
     });
 
   describe('subscribe', () => {
+    function getSubsCount() {
+      return Object.keys((<any>Meteor).default_connection._subscriptions).length;
+    }
+
     it('Should return RxJS Observable when using "subscribe"', () => {
       let returnValue = MeteorObservable.subscribe('test');
       expect(returnValue instanceof Observable).to.equal(true);
@@ -76,18 +79,29 @@ describe('MeteorObservable', () => {
       });
     });
 
-    it('Should stop the Meteor subscription when unsubscribing to the RxJS Observable', done => {
-      function getSubscriptionsCount() {
-        return Object.keys((<any>Meteor).default_connection._subscriptions).length;
-      }
-
-      let baseCount = getSubscriptionsCount();
+    it('Should stop subscription when one observer subscribes', done => {
+      let baseCount = getSubsCount();
       let subHandler = MeteorObservable.subscribe('test').subscribe(() => {
-        expect(getSubscriptionsCount()).to.equal(baseCount + 1);
+        expect(getSubsCount()).to.equal(baseCount + 1);
         subHandler.unsubscribe();
-        expect(getSubscriptionsCount()).to.equal(baseCount);
+        expect(getSubsCount()).to.equal(baseCount);
         done();
       });
     });
+
+    it('Should persist same subscription when two observers subscribe, and then one unsubscribes',
+      done => {
+        let baseCount = getSubsCount();
+        let observable = MeteorObservable.subscribe('test');
+        let subHandler1 = observable.subscribe(() => {});
+        let subHandler2 = observable.subscribe(() => {
+          expect(getSubsCount()).to.equal(baseCount + 1);
+          subHandler1.unsubscribe();
+          expect(getSubsCount()).to.equal(baseCount + 1);
+          subHandler2.unsubscribe();
+          expect(getSubsCount()).to.equal(baseCount);
+          done();
+        });
+      });
   });
 });

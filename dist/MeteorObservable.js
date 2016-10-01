@@ -16,12 +16,15 @@ var MeteorObservable = (function () {
         if (utils_1.isMeteorCallbacks(lastParam)) {
             throwInvalidCallback('MeteorObservable.call');
         }
+        var zone = utils_1.forkZone();
         return rxjs_1.Observable.create(function (observer) {
             Meteor.call.apply(Meteor, [name].concat(args.concat([
                 function (error, result) {
-                    error ? observer.error(error) :
-                        observer.next(result);
-                    observer.complete();
+                    zone.run(function () {
+                        error ? observer.error(error) :
+                            observer.next(result);
+                        observer.complete();
+                    });
                 }
             ])));
         });
@@ -35,25 +38,55 @@ var MeteorObservable = (function () {
         if (utils_1.isMeteorCallbacks(lastParam)) {
             throwInvalidCallback('MeteorObservable.subscribe');
         }
-        return rxjs_1.Observable.create(function (observer) {
-            var handler = Meteor.subscribe.apply(Meteor, [name].concat(args.concat([{
+        var zone = utils_1.forkZone();
+        var observers = [];
+        var subscribe = function () {
+            return Meteor.subscribe.apply(Meteor, [name].concat(args.concat([{
                     onError: function (error) {
-                        observer.error(error);
+                        zone.run(function () {
+                            observers.forEach(function (observer) { return observer.error(error); });
+                        });
                     },
                     onReady: function () {
-                        observer.next();
+                        zone.run(function () {
+                            observers.forEach(function (observer) { return observer.next(); });
+                        });
                     }
                 }
             ])));
-            return function () { return handler.stop(); };
+        };
+        var subHandler = null;
+        return rxjs_1.Observable.create(function (observer) {
+            observers.push(observer);
+            // Execute subscribe lazily.
+            if (subHandler === null) {
+                subHandler = subscribe();
+            }
+            return function () {
+                utils_1.removeObserver(observers, observer, function () { return subHandler.stop(); });
+            };
         });
     };
     MeteorObservable.autorun = function () {
-        return rxjs_1.Observable.create(function (observer) {
-            var handler = Tracker.autorun(function (computation) {
-                observer.next(computation);
+        var zone = utils_1.forkZone();
+        var observers = [];
+        var autorun = function () {
+            return Tracker.autorun(function (computation) {
+                zone.run(function () {
+                    observers.forEach(function (observer) { return observer.next(computation); });
+                });
             });
-            return function () { return handler.stop(); };
+        };
+        var handler = null;
+        return rxjs_1.Observable.create(function (observer) {
+            observers.push(observer);
+            // Execute autorun lazily.
+            if (handler === null) {
+                handler = autorun();
+            }
+            return function () {
+                utils_1.removeObserver(observers, observer, function () { return handler.stop(); });
+            };
         });
     };
     return MeteorObservable;

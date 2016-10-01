@@ -13,6 +13,15 @@ describe('MongoObservable methods bridge', () => {
     expect(findResult instanceof ObservableCursor).to.equal(true);
   });
 
+  it('Should wrap existing collection', () => {
+    let collection = new Mongo.Collection(null);
+    let insert = sinon.stub(collection, 'insert');
+
+    let observable = new MongoObservable.Collection(collection);
+    observable.insert({});
+    expect(insert.calledOnce).to.be.true;
+  });
+
   it('Insert should return an observable', done => {
     observable.insert({}).subscribe(id => {
       expect(id).to.be.string;

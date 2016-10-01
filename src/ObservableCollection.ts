@@ -2,6 +2,8 @@ import {Observable, Subscriber} from 'rxjs';
 
 import {ObservableCursor} from './ObservableCursor';
 
+import {removeObserver} from './utils';
+
 import Selector = Mongo.Selector;
 import ObjectID = Mongo.ObjectID;
 import SortSpecifier = Mongo.SortSpecifier;
@@ -32,11 +34,12 @@ export module MongoObservable {
   export class Collection<T> {
     private _collection: Mongo.Collection<T>;
 
-    constructor(nameOrExisting: string | Mongo.Collection<T>, options?: ConstructorOptions) {
-      if (typeof nameOrExisting === 'string') {
-        this._collection = new Mongo.Collection<T>(nameOrExisting, options);
-      } else {
+    constructor(nameOrExisting: string | Mongo.Collection<T>,
+                options?: ConstructorOptions) {
+      if (nameOrExisting instanceof Mongo.Collection) {
         this._collection = nameOrExisting;
+      } else {
+        this._collection = new Mongo.Collection<T>(nameOrExisting, options);
       }
     }
 
@@ -157,10 +160,7 @@ export module MongoObservable {
       return Observable.create((observer: Subscriber<T>) => {
         observers.push(observer);
         return () => {
-          let index = observers.indexOf(observer);
-          if (index !== -1) {
-            observers.splice(index, 1);
-          }
+          removeObserver(observers, observer);
         };
       });
     }

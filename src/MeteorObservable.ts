@@ -1,7 +1,7 @@
 'use strict';
 
 import {Observable, Subscriber} from 'rxjs';
-import {isMeteorCallbacks} from './utils';
+import {isMeteorCallbacks, forkZone, removeObserver} from './utils';
 
 function throwInvalidCallback(method: string) {
   throw new Error(
@@ -18,46 +18,81 @@ export class MeteorObservable {
       throwInvalidCallback('MeteorObservable.call');
     }
 
+    let zone = forkZone();
     return Observable.create((observer: Subscriber<Meteor.Error | T>) => {
       Meteor.call(name, ...args.concat([
         (error: Meteor.Error, result: T) => {
-          error ? observer.error(error) :
-            observer.next(result);
-          observer.complete();
+          zone.run(() => {
+            error ? observer.error(error) :
+              observer.next(result);
+            observer.complete();
+          });
         }
       ]));
     });
   }
 
   public static subscribe<T>(name: string, ...args: any[]): Observable<T> {
-    const lastParam = args[args.length - 1];
+    let lastParam = args[args.length - 1];
 
     if (isMeteorCallbacks(lastParam)) {
       throwInvalidCallback('MeteorObservable.subscribe');
     }
 
-    return Observable.create((observer: Subscriber<Meteor.Error | T>) => {
-      let handler = Meteor.subscribe(name, ...args.concat([{
+    let zone = forkZone();
+    let observers = [];
+    let subscribe = () => {
+      return Meteor.subscribe(name, ...args.concat([{
           onError: (error: Meteor.Error) => {
-            observer.error(error);
+            zone.run(() => {
+              observers.forEach(observer => observer.error(error));
+            });
           },
           onReady: () => {
-            observer.next();
+            zone.run(() => {
+              observers.forEach(observer => observer.next());
+            });
           }
         }
       ]));
+    };
 
-      return () => handler.stop();
+    let subHandler = null;
+    return Observable.create((observer: Subscriber<Meteor.Error | T>) => {
+      observers.push(observer);
+      // Execute subscribe lazily.
+      if (subHandler === null) {
+        subHandler = subscribe();
+      }
+      return () => {
+        removeObserver(observers,
+          observer, () => subHandler.stop());
+      };
     });
   }
 
   public static autorun(): Observable<Tracker.Computation> {
-    return Observable.create((observer: Subscriber<Meteor.Error | Tracker.Computation>) => {
-      let handler = Tracker.autorun((computation: Tracker.Computation) => {
-        observer.next(computation);
+    let zone = forkZone();
+    let observers = [];
+    let autorun = () => {
+      return Tracker.autorun((computation: Tracker.Computation) => {
+        zone.run(() => {
+          observers.forEach(observer => observer.next(computation));
+        });
       });
+    };
 
-      return () => handler.stop();
+    let handler = null;
+    return Observable.create((observer: Subscriber<Meteor.Error | Tracker.Computation>) => {
+      observers.push(observer);
+      // Execute autorun lazily.
+      if (handler === null) {
+        handler = autorun();
+      }
+      return () => {
+        removeObserver(observers,
+          observer, () => handler.stop());
+      };
     });
   }
 }
