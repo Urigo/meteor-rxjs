@@ -51,14 +51,20 @@ const Tasks = new MongoObservable.Collection<Task>('tasks');
   template: `<ul><li *ngFor="let task of tasks | async"></li></ul>`
 })
 class Tasks {
-  tasks = Tasks.find();
+  tasks = Tasks.find().zone();
 }
 
 ````
 
 ### Zone operator
 
-`meteor-rxjs` implements and exposes a special Zone operator for the Angular 2 users' convenience. It might be helpful if one wants to control when UI updates are made. For example, we can improve performance of the above `Tasks` component by debouncing UI updates as follows:
+As you can see above we called `zone` method of the cursor observable. This is a special
+Zone operator that is implemeted by `meteor-rxjs` for the Angular 2 users' convenience.
+This operator runs ngZone each time when new data arrives to the Mongo cursor observable,
+thus we force UI updates at the right time using it.
+
+It makes sense to improve performance of the above `Tasks` component by debouncing UI updates.
+In this case we are using Zone operator as well:
 
 ```ts
 
@@ -69,5 +75,3 @@ class List {
 }
 
 ```
-
-

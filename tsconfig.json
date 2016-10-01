@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "module": "commonjs",
+    "module": "es2015",
     "target": "es5",
     "lib": ["es6", "dom"],
     "noImplicitAny": false,
@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "sourceMap": false,
+    "noEmitHelpers": true,
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src"
