@@ -1,0 +1,6 @@
+import { Observable } from 'rxjs';
+export declare class MeteorObservable {
+    static call<T>(name: string, ...args: any[]): Observable<T>;
+    static subscribe<T>(name: string, ...args: any[]): Observable<T>;
+    static autorun(): Observable<Tracker.Computation>;
+}
