@@ -1,7 +1,7 @@
 # Meteor + RxJS
 Harness Meteor reactivity with RxJS.
 
-RxJS is built to simplify complexity dealing with reactive data flows. At the same time, Meteor's Minimongo cursors are reactive and a good target for RxJS API. Thus combing RxJS and Meteor, we bring together best parts of two worlds.
+RxJS is built to simplify complexity dealing with reactive data flows. At the same time, Meteor's Minimongo cursors are reactive and a good target for RxJS API. Thus combining RxJS and Meteor, we bring together best parts of two worlds.
 
 ## Mongo Cursor Observable
 As soon as you install this package (`npm install meteor-rxjs`), you have ability to use a special Mongo collection class that works
