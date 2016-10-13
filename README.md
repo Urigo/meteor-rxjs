@@ -1,10 +1,9 @@
 # Meteor + RxJS
-Use Meteor API in the RxJS style.
+Harness Meteor reactivity with RxJS.
 
-One of Meteor’s killer features is a reactive data integration of the server and client built with the help of MongoDB oplog, which is, in other words, continues and almost immediate data interchange between these two tiers. At the same time, to simplify complexity that dealing with reactive data sources sometimes has is what RxJS is designed and built for. So combing RxJS and Meteor API, we are bringing together best parts of two worlds.
+RxJS is built to simplify complexity dealing with reactive data flows. At the same time, Meteor's Minimongo cursors are reactive and a good target for RxJS API. Thus combing RxJS and Meteor, we bring together best parts of two worlds.
 
 ## Mongo Cursor Observable
-
 As soon as you install this package (`npm install meteor-rxjs`), you have ability to use a special Mongo collection class that works
 with cursor observables instead of the ordinary Mongo cursors. In other words, one can subscribe on the Mongo cursor's data updates now as follows:
 
@@ -33,6 +32,15 @@ Tasks.find({checked: false})
   .map(tasks => tasks.length)
   .subscribe(todoCount => console.log(todoCount));
 
+```
+
+## Usage with Meteor packages
+
+Meteor has a lot of packages that extend `Mongo.Collection` with new methods. Since `MongoObservable.Collection` is a wrapper over `Mongo.Collection`, you can't use new methods on observable instances directly. The solution here is to pass `Mongo.Collection`'s instance to the observable constructor, and use them whenever you need after separately:
+```ts
+let collection = new Mongo.Collection('foo');
+let observable = new MongoObservable.Collection(collection);
+collection.applySchema(...); // with SimpleSchema package
 ```
 
 ## Usage in Angular 2
