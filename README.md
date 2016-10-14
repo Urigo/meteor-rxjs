@@ -40,7 +40,7 @@ Meteor has a lot of packages that extend `Mongo.Collection` with new methods. Si
 ```ts
 let collection = new Mongo.Collection('foo');
 let observable = new MongoObservable.Collection(collection);
-collection.applySchema(...); // with SimpleSchema package
+collection.attachSchema(...); // with SimpleSchema package
 ```
 
 ## Usage in Angular 2
@@ -83,3 +83,6 @@ class List {
 }
 
 ```
+
+##License
+MIT
