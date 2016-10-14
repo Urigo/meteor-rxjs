@@ -44,6 +44,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
     if (this._hCursor) {
       this._hCursor.stop();
     }
+    this._data = [];
     this._hCursor = null;
   }
 
