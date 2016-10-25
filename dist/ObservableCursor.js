@@ -38,6 +38,7 @@ export var ObservableCursor = (function (_super) {
         if (this._hCursor) {
             this._hCursor.stop();
         }
+        this._data = [];
         this._hCursor = null;
     };
     ObservableCursor.prototype.dispose = function () {
@@ -77,6 +78,12 @@ export var ObservableCursor = (function (_super) {
         this._handleChange();
     };
     ;
+    ObservableCursor.prototype._movedTo = function (doc, fromIndex, toIndex) {
+        this._data.splice(fromIndex, 1);
+        this._data.splice(toIndex, 0, doc);
+        this._handleChange();
+    };
+    ;
     ObservableCursor.prototype._handleChange = function () {
         var _this = this;
         this._zone.run(function () {
@@ -89,6 +96,7 @@ export var ObservableCursor = (function (_super) {
         return gZone.run(function () { return cursor.observe({
             addedAt: _this._addedAt.bind(_this),
             changedAt: _this._changedAt.bind(_this),
+            movedTo: _this._movedTo.bind(_this),
             removedAt: _this._removedAt.bind(_this)
         }); });
     };

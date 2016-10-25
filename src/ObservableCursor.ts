@@ -92,6 +92,12 @@ export class ObservableCursor<T> extends Observable<T[]> {
     this._handleChange();
   };
 
+  _movedTo(doc, fromIndex, toIndex) {
+    this._data.splice(fromIndex, 1);
+    this._data.splice(toIndex, 0, doc);
+    this._handleChange();
+  };
+
   _handleChange() {
     this._zone.run(() => {
       this._runNext(this._data);
@@ -103,6 +109,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
       () => cursor.observe({
         addedAt: this._addedAt.bind(this),
         changedAt: this._changedAt.bind(this),
+        movedTo: this._movedTo.bind(this),
         removedAt: this._removedAt.bind(this)
       }));
   }

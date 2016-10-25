@@ -18,6 +18,7 @@ export declare class ObservableCursor<T> extends Observable<T[]> {
     _addedAt(doc: any, at: any, before: any): void;
     _changedAt(doc: any, old: any, at: any): void;
     _removedAt(doc: any, at: any): void;
+    _movedTo(doc: any, fromIndex: any, toIndex: any): void;
     _handleChange(): void;
     _observeCursor(cursor: Mongo.Cursor<T>): any;
 }
