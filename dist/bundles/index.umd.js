@@ -242,7 +242,7 @@ var ObservableCursor = (function (_super) {
         };
         Collection.prototype.find = function (selector, options) {
             var cursor = this._collection.find.apply(this._collection, arguments);
-            return ObservableCursor.create(cursor).publish().refCount();
+            return ObservableCursor.create(cursor);
         };
         Collection.prototype.findOne = function (selector, options) {
             return this._collection.findOne.apply(this._collection, arguments);

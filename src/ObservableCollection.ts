@@ -142,7 +142,7 @@ export module MongoObservable {
     }): ObservableCursor<T> {
       const cursor = this._collection.find.apply(
         this._collection, arguments);
-      return ObservableCursor.create<T>(cursor).publish().refCount();
+      return ObservableCursor.create<T>(cursor);
     }
 
     findOne(selector?: Selector | ObjectID | string, options?: {
