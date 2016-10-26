@@ -82,6 +82,37 @@ describe('ObservableCursor', function () {
     expect(spy.calledOnce).to.be.true;
   });
 
+  it('Should trigger subscription callback when moving items in the collection', (done) => {
+    cursor = collection.find({}, {sort: {name: 1}});
+    observable = ObservableCursor.create(cursor);
+
+    let newDoc = {name: 'ZZZZ'};
+    let subHandler;
+    let count = 0;
+
+    let callback = docs => {
+      count++;
+
+      // 4 because: insert, insert, update, *move*
+      if (count === 4) {
+        let firstItem = docs[0];
+        expect(firstItem.name).to.equal("AAAA");
+        subHandler.unsubscribe();
+        done();
+      }
+    };
+
+    subHandler = observable.subscribe(callback);
+
+    let objectId = collection.insert(newDoc);
+
+    collection.insert({
+      name: "BBBB"
+    });
+
+    collection.update({_id: objectId}, { $set: {name: "AAAA"} });
+  });
+
   it('Should trigger callback twice when inserting a doc and then removing it', () => {
     let count = 0;
     let subHandler;
