@@ -20,7 +20,8 @@
     "prepublish": "npm run build",
     "build-only": "tsc || echo not ok",
     "pretest": "cd tests && npm install",
-    "test": "cd tests && meteor test --once --driver-package=dispatch:mocha-phantomjs",
+    "test:ci": "cd tests && meteor test --once --driver-package=dispatch:mocha-phantomjs",
+    "test": "cd tests && meteor test --driver-package=dispatch:mocha-browser",
     "lint": "tslint src/**/*.ts",
     "bundle": "rollup -i ./dist/index.js -o ./dist/bundles/index.umd.js -n meteor.rxjs -c rollup.config.js"
   },
