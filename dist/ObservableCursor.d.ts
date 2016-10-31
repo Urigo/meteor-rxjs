@@ -1,8 +1,4 @@
 import { Observable } from 'rxjs';
-/**
- *  A class represents a Monog.Cursor wrapped with RxJS features.
- *  @extends Observable
- */
 export declare class ObservableCursor<T> extends Observable<T[]> {
     private _zone;
     private _data;
@@ -16,7 +12,8 @@ export declare class ObservableCursor<T> extends Observable<T[]> {
      *  Prefer to create an Cursors from the ObservableCollection instance instead.
      *
      *  @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
-     *  @returns {ObservableCursor<T>} Wrapped Cursor.
+     *  @static
+     *  @returns {ObservableCursor} Wrapped Cursor.
      */
     static create<T>(cursor: Mongo.Cursor<T>): ObservableCursor<T>;
     /**

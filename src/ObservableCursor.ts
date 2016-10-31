@@ -3,10 +3,6 @@
 import {Observable, Subscriber, Subject} from 'rxjs';
 import {gZone, forkZone, removeObserver} from './utils';
 
-/**
- *  A class represents a Monog.Cursor wrapped with RxJS features.
- *  @extends Observable
- */
 export class ObservableCursor<T> extends Observable<T[]> {
   private _zone: Zone;
   private _data: Array <T> = [];
@@ -21,7 +17,8 @@ export class ObservableCursor<T> extends Observable<T[]> {
    *  Prefer to create an Cursors from the ObservableCollection instance instead.
    *
    *  @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
-   *  @returns {ObservableCursor<T>} Wrapped Cursor.
+   *  @static
+   *  @returns {ObservableCursor} Wrapped Cursor.
    */
   static create<T>(cursor: Mongo.Cursor<T>): ObservableCursor<T> {
     return new ObservableCursor<T>(cursor);

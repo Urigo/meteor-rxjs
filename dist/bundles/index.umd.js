@@ -56,10 +56,6 @@ function removeObserver(observers, observer, onEmpty) {
 }
 var gZone = g.Zone ? g.Zone.current : fakeZone;
 
-/**
- *  A class represents a Monog.Cursor wrapped with RxJS features.
- *  @extends Observable
- */
 var ObservableCursor = (function (_super) {
     __extends(ObservableCursor, _super);
     /**
@@ -91,7 +87,8 @@ var ObservableCursor = (function (_super) {
      *  Prefer to create an Cursors from the ObservableCollection instance instead.
      *
      *  @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
-     *  @returns {ObservableCursor<T>} Wrapped Cursor.
+     *  @static
+     *  @returns {ObservableCursor} Wrapped Cursor.
      */
     ObservableCursor.create = function (cursor) {
         return new ObservableCursor(cursor);
