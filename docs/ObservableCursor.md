@@ -1,122 +1,218 @@
-<a name="MeteorComponent"></a>
+## Classes
 
-## MeteorComponent
-A class to extend in Angular 2 components.
-Contains wrappers over main Meteor methods,
-that does some maintenance work behind the scene.
-For example, it destroys subscription handles
-when the component is being destroyed itself.
+<dl>
+<dt><a href="#ObservableCursor">ObservableCursor</a> ⇐ <code>Observable</code></dt>
+<dd><p>A class represents a Monog.Cursor wrapped with RxJS features.</p>
+</dd>
+<dt><a href="#ObservableCursor">ObservableCursor</a> ⇐ <code>Observable</code></dt>
+<dd></dd>
+</dl>
+
+<a name="ObservableCursor"></a>
+
+## ObservableCursor ⇐ <code>Observable</code>
+A class represents a Monog.Cursor wrapped with RxJS features.
 
 **Kind**: global class  
+**Extends:** <code>Observable</code>  
 
-* [MeteorComponent](#MeteorComponent)
+* [ObservableCursor](#ObservableCursor) ⇐ <code>Observable</code>
+    * [new ObservableCursor(cursor)](#new_ObservableCursor_new)
     * _instance_
-        * [.autorun(func, autoBind)](#MeteorComponent+autorun) ⇒ <code>Tracker.Computation</code>
-        * [.subscribe(name, ...args, autoBind)](#MeteorComponent+subscribe) ⇒ <code>Meteor.SubscriptionHandle</code>
-        * [.call(name, ...args, autoBind)](#MeteorComponent+call) ⇒ <code>void</code>
-    * _inner_
-        * [~autorunCallback](#MeteorComponent..autorunCallback) : <code>function</code>
+        * [.cursor](#ObservableCursor+cursor) ⇒ <code>Mongo.Cursor.&lt;T&gt;</code>
+        * [.collectionCount()](#ObservableCursor+collectionCount) ⇒ <code>Observable</code>
+        * [.stop()](#ObservableCursor+stop)
+        * [.dispose()](#ObservableCursor+dispose)
+        * [.fetch()](#ObservableCursor+fetch) ⇒ <code>Array.&lt;T&gt;</code>
+        * [.observe(callbacks)](#ObservableCursor+observe) ⇒ <code>Meteor.LiveQueryHandle</code>
+        * [.observeChanges(callbacks)](#ObservableCursor+observeChanges) ⇒ <code>Meteor.LiveQueryHandle</code>
+    * _static_
+        * [.create(cursor)](#ObservableCursor.create) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
 
-<a name="MeteorComponent+autorun"></a>
+<a name="new_ObservableCursor_new"></a>
 
-### meteorComponent.autorun(func, autoBind) ⇒ <code>Tracker.Computation</code>
-Method has the same notation as Meteor.autorun
-except the last parameter.
-
-**Kind**: instance method of <code>[MeteorComponent](#MeteorComponent)</code>  
-**Returns**: <code>Tracker.Computation</code> - - Object representing the Meteor computation  
-**See**
-
-- [Tracker.Computation in Meteor documentation](https://docs.meteor.com/api/tracker.html#tracker_computation)
-- [autorun in Meteor documentation](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
-
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| func | <code>[autorunCallback](#MeteorComponent..autorunCallback)</code> |  | Callback to be executed when current computation is invalidated. The Tracker.Computation object will be passed as argument to this callback. |
-| autoBind | <code>Boolean</code> | <code>true</code> | Determine whether Angular2 Zone will run   after the func call to initiate change detection. |
-
-**Example**  
-```js
-class MyComponent extends MeteorComponent {
-   private myData: Mongo.Cursor;
-   private dataId: any;
-
-   constructor() {
-     super();
-
-     this.autorun(() => {
-       this.myData = MyCollection.find({ _id: dataId});
-     }, true);
-   }
-}
-```
-<a name="MeteorComponent+subscribe"></a>
-
-### meteorComponent.subscribe(name, ...args, autoBind) ⇒ <code>Meteor.SubscriptionHandle</code>
-Method has the same notation as Meteor.subscribe:
-   subscribe(name, [args1, args2], [callbacks], [autoBind])
- except the last autoBind param (see autorun above).
-
-**Kind**: instance method of <code>[MeteorComponent](#MeteorComponent)</code>  
-**Returns**: <code>Meteor.SubscriptionHandle</code> - - The handle of the subscription created by Meteor.  
-**See**: [Publication/Subscription in Meteor documentation](http://docs.meteor.com/api/pubsub.html)  
+### new ObservableCursor(cursor)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | Name of the publication in the Meteor server |
-| ...args | <code>any</code> | Parameters that will be forwarded to the publication. |
-| autoBind | <code>Boolean</code> | Determine whether Angular 2 zone will run   after the func call to initiate change detection. |
+| cursor | <code>Mongo.Cursor.&lt;T&gt;</code> | The Mongo.Cursor to wrap. |
 
-**Example**  
-```js
-class MyComponent extends MeteorComponent {
-    constructor() {
-      super();
+<a name="ObservableCursor+cursor"></a>
 
-      this.subscribe("myData", 10);
-    }
- }
+### observableCursor.cursor ⇒ <code>Mongo.Cursor.&lt;T&gt;</code>
+Returns the actual Mongo.Cursor that wrapped by current ObservableCursor instance.
 
- 
-```
-<a name="MeteorComponent+call"></a>
+**Kind**: instance property of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Mongo.Cursor.&lt;T&gt;</code> - The actual MongoDB Cursor.  
+<a name="ObservableCursor+collectionCount"></a>
 
-### meteorComponent.call(name, ...args, autoBind) ⇒ <code>void</code>
-Method has the same notation as Meteor.call:
-   call(name, [args1, args2], [callbacks], [autoBind])
- except the last autoBind param (see autorun above).
+### observableCursor.collectionCount() ⇒ <code>Observable</code>
+A wrapper for Mongo.Cursor.count() method - returns an Observable of number, which
+triggers each time there is a change in the collection, and exposes the number of
+objects in the collection.
 
-**Kind**: instance method of <code>[MeteorComponent](#MeteorComponent)</code>  
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Observable</code> - Observable which trigger the callback when the
+count of the object changes.  
+<a name="ObservableCursor+stop"></a>
+
+### observableCursor.stop()
+Stops the observation on the cursor.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+<a name="ObservableCursor+dispose"></a>
+
+### observableCursor.dispose()
+Clears the Observable definition.
+Use this method only when the Observable is still cold, and there are no active subscriptions yet.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+<a name="ObservableCursor+fetch"></a>
+
+### observableCursor.fetch() ⇒ <code>Array.&lt;T&gt;</code>
+Return all matching documents as an Array.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Array.&lt;T&gt;</code> - The array with the matching documents.  
+<a name="ObservableCursor+observe"></a>
+
+### observableCursor.observe(callbacks) ⇒ <code>Meteor.LiveQueryHandle</code>
+Watch a query. Receive callbacks as the result set changes.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Meteor.LiveQueryHandle</code> - The array with the matching documents.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | Name of the publication in the Meteor server |
-| ...args | <code>any</code> | Parameters that will be forwarded to the method. |
-| autoBind | <code>Boolean</code> | autoBind Determine whether Angular 2 zone will run   after the func call to initiate change detection. |
+| callbacks | <code>Mongo.ObserveCallbacks</code> | The callbacks object. |
 
-**Example**  
-```js
-class MyComponent extends MeteorComponent {
-    constructor() {
-      super();
+<a name="ObservableCursor+observeChanges"></a>
 
-      this.call("serverMethod", (err, result) => {
-         // Handle response...
-      });
-    }
- }
+### observableCursor.observeChanges(callbacks) ⇒ <code>Meteor.LiveQueryHandle</code>
+Watch a query. Receive callbacks as the result set changes.
+Only the differences between the old and new documents are passed to the callbacks.
 
- 
-```
-<a name="MeteorComponent..autorunCallback"></a>
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Meteor.LiveQueryHandle</code> - The array with the matching documents.  
 
-### MeteorComponent~autorunCallback : <code>function</code>
-This callback called when autorun triggered by Meteor.
+| Param | Type | Description |
+| --- | --- | --- |
+| callbacks | <code>Mongo.ObserveChangesCallbacks</code> | The callbacks object. |
 
-**Kind**: inner typedef of <code>[MeteorComponent](#MeteorComponent)</code>  
+<a name="ObservableCursor.create"></a>
 
-| Param | Type |
-| --- | --- |
-| computation | <code>Tracker.Computation</code> | 
+### ObservableCursor.create(cursor) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
+Static method which creates an ObservableCursor from Mongo.Cursor.
+ Use this to create an ObservableCursor object from an existing Mongo.Cursor.
+ Prefer to create an Cursors from the ObservableCollection instance instead.
+
+**Kind**: static method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>ObservableCursor.&lt;T&gt;</code> - Wrapped Cursor.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cursor | <code>Mongo.Cursor.&lt;T&gt;</code> | The Mongo.Cursor to wrap. |
+
+<a name="ObservableCursor"></a>
+
+## ObservableCursor ⇐ <code>Observable</code>
+**Kind**: global class  
+**Extends:** <code>Observable</code>  
+
+* [ObservableCursor](#ObservableCursor) ⇐ <code>Observable</code>
+    * [new ObservableCursor(cursor)](#new_ObservableCursor_new)
+    * _instance_
+        * [.cursor](#ObservableCursor+cursor) ⇒ <code>Mongo.Cursor.&lt;T&gt;</code>
+        * [.collectionCount()](#ObservableCursor+collectionCount) ⇒ <code>Observable</code>
+        * [.stop()](#ObservableCursor+stop)
+        * [.dispose()](#ObservableCursor+dispose)
+        * [.fetch()](#ObservableCursor+fetch) ⇒ <code>Array.&lt;T&gt;</code>
+        * [.observe(callbacks)](#ObservableCursor+observe) ⇒ <code>Meteor.LiveQueryHandle</code>
+        * [.observeChanges(callbacks)](#ObservableCursor+observeChanges) ⇒ <code>Meteor.LiveQueryHandle</code>
+    * _static_
+        * [.create(cursor)](#ObservableCursor.create) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
+
+<a name="new_ObservableCursor_new"></a>
+
+### new ObservableCursor(cursor)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cursor | <code>Mongo.Cursor.&lt;T&gt;</code> | The Mongo.Cursor to wrap. |
+
+<a name="ObservableCursor+cursor"></a>
+
+### observableCursor.cursor ⇒ <code>Mongo.Cursor.&lt;T&gt;</code>
+Returns the actual Mongo.Cursor that wrapped by current ObservableCursor instance.
+
+**Kind**: instance property of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Mongo.Cursor.&lt;T&gt;</code> - The actual MongoDB Cursor.  
+<a name="ObservableCursor+collectionCount"></a>
+
+### observableCursor.collectionCount() ⇒ <code>Observable</code>
+A wrapper for Mongo.Cursor.count() method - returns an Observable of number, which
+triggers each time there is a change in the collection, and exposes the number of
+objects in the collection.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Observable</code> - Observable which trigger the callback when the
+count of the object changes.  
+<a name="ObservableCursor+stop"></a>
+
+### observableCursor.stop()
+Stops the observation on the cursor.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+<a name="ObservableCursor+dispose"></a>
+
+### observableCursor.dispose()
+Clears the Observable definition.
+Use this method only when the Observable is still cold, and there are no active subscriptions yet.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+<a name="ObservableCursor+fetch"></a>
+
+### observableCursor.fetch() ⇒ <code>Array.&lt;T&gt;</code>
+Return all matching documents as an Array.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Array.&lt;T&gt;</code> - The array with the matching documents.  
+<a name="ObservableCursor+observe"></a>
+
+### observableCursor.observe(callbacks) ⇒ <code>Meteor.LiveQueryHandle</code>
+Watch a query. Receive callbacks as the result set changes.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Meteor.LiveQueryHandle</code> - The array with the matching documents.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callbacks | <code>Mongo.ObserveCallbacks</code> | The callbacks object. |
+
+<a name="ObservableCursor+observeChanges"></a>
+
+### observableCursor.observeChanges(callbacks) ⇒ <code>Meteor.LiveQueryHandle</code>
+Watch a query. Receive callbacks as the result set changes.
+Only the differences between the old and new documents are passed to the callbacks.
+
+**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>Meteor.LiveQueryHandle</code> - The array with the matching documents.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callbacks | <code>Mongo.ObserveChangesCallbacks</code> | The callbacks object. |
+
+<a name="ObservableCursor.create"></a>
+
+### ObservableCursor.create(cursor) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
+Static method which creates an ObservableCursor from Mongo.Cursor.
+ Use this to create an ObservableCursor object from an existing Mongo.Cursor.
+ Prefer to create an Cursors from the ObservableCollection instance instead.
+
+**Kind**: static method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Returns**: <code>ObservableCursor.&lt;T&gt;</code> - Wrapped Cursor.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cursor | <code>Mongo.Cursor.&lt;T&gt;</code> | The Mongo.Cursor to wrap. |
 

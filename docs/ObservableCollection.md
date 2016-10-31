@@ -1,122 +1,224 @@
-<a name="MeteorComponent"></a>
+<a name="Collection"></a>
 
-## MeteorComponent
-A class to extend in Angular 2 components.
-Contains wrappers over main Meteor methods,
-that does some maintenance work behind the scene.
-For example, it destroys subscription handles
-when the component is being destroyed itself.
+## Collection
+A class represents a MongoDB collection in the client side, wrapped with RxJS
+Observables, so you can use it with your Angular 2 easier.
+The wrapper has the same API as Mongo.Collection, only the "find" method returns
+an ObservableCursor instead of regular Mongo.Cursor.
+
+T is a generic type - should be used with the type of the objects inside the collection.
 
 **Kind**: global class  
 
-* [MeteorComponent](#MeteorComponent)
+* [Collection](#Collection)
+    * [new Collection(nameOrExisting, options)](#new_Collection_new)
     * _instance_
-        * [.autorun(func, autoBind)](#MeteorComponent+autorun) ⇒ <code>Tracker.Computation</code>
-        * [.subscribe(name, ...args, autoBind)](#MeteorComponent+subscribe) ⇒ <code>Meteor.SubscriptionHandle</code>
-        * [.call(name, ...args, autoBind)](#MeteorComponent+call) ⇒ <code>void</code>
+        * [.collection](#Collection+collection) ⇒ <code>Mongo.Collection.&lt;T&gt;</code>
+        * [.allow()](#Collection+allow) ⇒ <code>Boolean</code>
+        * [.deny()](#Collection+deny) ⇒ <code>Boolean</code>
+        * [.rawCollection()](#Collection+rawCollection) ⇒ <code>Mongo.Collection</code>
+        * [.rawDatabase()](#Collection+rawDatabase) ⇒ <code>Mongo.Db</code>
+        * [.insert(doc)](#Collection+insert) ⇒ <code>Observable.&lt;string&gt;</code>
+        * [.remove(selector)](#Collection+remove) ⇒ <code>Observable.&lt;Number&gt;</code>
+        * [.update(selector, modifier, options)](#Collection+update) ⇒ <code>Observable.&lt;Number&gt;</code>
+        * [.upsert(selector, modifier, options)](#Collection+upsert) ⇒ <code>Observable.&lt;{numberAffected, insertedId}&gt;</code>
+        * [.find(selector, options)](#Collection+find) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
+        * [.findOne(selector, options)](#Collection+findOne) ⇒ <code>any</code>
     * _inner_
-        * [~autorunCallback](#MeteorComponent..autorunCallback) : <code>function</code>
+        * [~MongoQueryOptions](#Collection..MongoQueryOptions) : <code>Object</code>
+        * [~MongoQuerySelector](#Collection..MongoQuerySelector) : <code>Mongo.Selector</code> &#124; <code>Mongo.ObjectID</code> &#124; <code>string</code>
+        * [~MongoUpsertOptions](#Collection..MongoUpsertOptions) : <code>Object</code>
+        * [~MongoUpdateOptions](#Collection..MongoUpdateOptions) : <code>Object</code>
 
-<a name="MeteorComponent+autorun"></a>
+<a name="new_Collection_new"></a>
 
-### meteorComponent.autorun(func, autoBind) ⇒ <code>Tracker.Computation</code>
-Method has the same notation as Meteor.autorun
-except the last parameter.
+### new Collection(nameOrExisting, options)
+Creates a new Mongo.Collection instance wrapped with Observable features.
 
-**Kind**: instance method of <code>[MeteorComponent](#MeteorComponent)</code>  
-**Returns**: <code>Tracker.Computation</code> - - Object representing the Meteor computation  
-**See**
-
-- [Tracker.Computation in Meteor documentation](https://docs.meteor.com/api/tracker.html#tracker_computation)
-- [autorun in Meteor documentation](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
-
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| func | <code>[autorunCallback](#MeteorComponent..autorunCallback)</code> |  | Callback to be executed when current computation is invalidated. The Tracker.Computation object will be passed as argument to this callback. |
-| autoBind | <code>Boolean</code> | <code>true</code> | Determine whether Angular2 Zone will run   after the func call to initiate change detection. |
-
-**Example**  
-```js
-class MyComponent extends MeteorComponent {
-   private myData: Mongo.Cursor;
-   private dataId: any;
-
-   constructor() {
-     super();
-
-     this.autorun(() => {
-       this.myData = MyCollection.find({ _id: dataId});
-     }, true);
-   }
-}
-```
-<a name="MeteorComponent+subscribe"></a>
-
-### meteorComponent.subscribe(name, ...args, autoBind) ⇒ <code>Meteor.SubscriptionHandle</code>
-Method has the same notation as Meteor.subscribe:
-   subscribe(name, [args1, args2], [callbacks], [autoBind])
- except the last autoBind param (see autorun above).
-
-**Kind**: instance method of <code>[MeteorComponent](#MeteorComponent)</code>  
-**Returns**: <code>Meteor.SubscriptionHandle</code> - - The handle of the subscription created by Meteor.  
-**See**: [Publication/Subscription in Meteor documentation](http://docs.meteor.com/api/pubsub.html)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | Name of the publication in the Meteor server |
-| ...args | <code>any</code> | Parameters that will be forwarded to the publication. |
-| autoBind | <code>Boolean</code> | Determine whether Angular 2 zone will run   after the func call to initiate change detection. |
+| nameOrExisting | <code>String</code> &#124; <code>Mongo.Collection</code> | The name of the collection. If null, creates an  unmanaged (unsynchronized) local collection. If provided an instance of existing collection, will  create a wrapper for the existing Mongo.Collection. |
+| options | <code>ConstructorOptions</code> | Creation options. |
 
-**Example**  
-```js
-class MyComponent extends MeteorComponent {
-    constructor() {
-      super();
+<a name="Collection+collection"></a>
 
-      this.subscribe("myData", 10);
-    }
- }
+### collection.collection ⇒ <code>Mongo.Collection.&lt;T&gt;</code>
+Returns the Mongo.Collection object that wrapped with the MongoObservable.Collection.
 
- 
-```
-<a name="MeteorComponent+call"></a>
+**Kind**: instance property of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Mongo.Collection.&lt;T&gt;</code> - The Collection instance  
+<a name="Collection+allow"></a>
 
-### meteorComponent.call(name, ...args, autoBind) ⇒ <code>void</code>
-Method has the same notation as Meteor.call:
-   call(name, [args1, args2], [callbacks], [autoBind])
- except the last autoBind param (see autorun above).
+### collection.allow() ⇒ <code>Boolean</code>
+Allow users to write directly to this collection from client code, subject to limitations you define.
 
-**Kind**: instance method of <code>[MeteorComponent](#MeteorComponent)</code>  
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+<a name="Collection+deny"></a>
+
+### collection.deny() ⇒ <code>Boolean</code>
+Override allow rules.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+<a name="Collection+rawCollection"></a>
+
+### collection.rawCollection() ⇒ <code>Mongo.Collection</code>
+Returns the Collection object corresponding to this collection from the npm
+ mongodb driver module which is wrapped by Mongo.Collection.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Mongo.Collection</code> - The Collection instance  
+**See**: [rawCollection on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-rawCollection)  
+<a name="Collection+rawDatabase"></a>
+
+### collection.rawDatabase() ⇒ <code>Mongo.Db</code>
+Returns the Db object corresponding to this collection's database connection from the
+ npm mongodb driver module which is wrapped by Mongo.Collection.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Mongo.Db</code> - The Db instance  
+**See**: [rawDatabase on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-rawDatabase)  
+<a name="Collection+insert"></a>
+
+### collection.insert(doc) ⇒ <code>Observable.&lt;string&gt;</code>
+Insert a document in the collection.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Observable.&lt;string&gt;</code> - Observable which completes with the inserted ObjectId  
+**See**: [insert on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-insert)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | Name of the publication in the Meteor server |
-| ...args | <code>any</code> | Parameters that will be forwarded to the method. |
-| autoBind | <code>Boolean</code> | autoBind Determine whether Angular 2 zone will run   after the func call to initiate change detection. |
+| doc | <code>T</code> | The document to insert. May not yet have an _id  attribute, in which case Meteor will generate one for you. |
 
-**Example**  
+<a name="Collection+remove"></a>
+
+### collection.remove(selector) ⇒ <code>Observable.&lt;Number&gt;</code>
+Remove documents from the collection.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Observable.&lt;Number&gt;</code> - Observable which completes with the number of affected rows  
+**See**: [remove on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-remove)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | Specifies which documents to modify |
+
+<a name="Collection+update"></a>
+
+### collection.update(selector, modifier, options) ⇒ <code>Observable.&lt;Number&gt;</code>
+Modify one or more documents in the collection.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Observable.&lt;Number&gt;</code> - Observable which completes with the number of affected rows  
+**See**: [update on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-update)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | Specifies which documents to modify |
+| modifier | <code>Modifier</code> | Specifies how to modify the documents |
+| options | <code>MongoUpdateOptions</code> | Update options  first argument and, if no error, the number of affected documents as the second |
+
+<a name="Collection+upsert"></a>
+
+### collection.upsert(selector, modifier, options) ⇒ <code>Observable.&lt;{numberAffected, insertedId}&gt;</code>
+Finds the first document that matches the selector, as ordered by sort and skip options.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>Observable.&lt;{numberAffected, insertedId}&gt;</code> - Observable which completes with an
+ Object that contain the keys numberAffected and insertedId.  
+**See**: [upsert on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | Specifies which documents to modify |
+| modifier | <code>Modifier</code> | Specifies how to modify the documents |
+| options | <code>MongoUpsertOptions</code> | Upsert options  first argument and, if no error, the number of affected documents as the second. |
+
+<a name="Collection+find"></a>
+
+### collection.find(selector, options) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
+Method has the same notation as Mongo.Collection.find, only returns Observable.
+
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>ObservableCursor.&lt;T&gt;</code> - RxJS Observable wrapped with Meteor features.  
+**See**: [find on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-find)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | A query describing the documents to find |
+| options | <code>[MongoQueryOptions](#Collection..MongoQueryOptions)</code> | Query options, such as sort, limit, etc. |
+
+**Example** *(Using Angular2 Component)*  
 ```js
-class MyComponent extends MeteorComponent {
-    constructor() {
-      super();
+ const MyCollection = MongoObservable.Collection("myCollection");
 
-      this.call("serverMethod", (err, result) => {
-         // Handle response...
-      });
+ class MyComponent  {
+    private myData: ObservableCursor<any>;
+
+    constructor() {
+       this.myData = MyCollection.find({}, {limit: 10});
     }
  }
-
- 
 ```
-<a name="MeteorComponent..autorunCallback"></a>
+<a name="Collection+findOne"></a>
 
-### MeteorComponent~autorunCallback : <code>function</code>
-This callback called when autorun triggered by Meteor.
+### collection.findOne(selector, options) ⇒ <code>any</code>
+Finds the first document that matches the selector, as ordered by sort and skip options.
 
-**Kind**: inner typedef of <code>[MeteorComponent](#MeteorComponent)</code>  
+**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Returns**: <code>any</code> - The first object, or `undefined` in case of non-existing object.  
+**See**: [findOne on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-findOne)  
 
-| Param | Type |
-| --- | --- |
-| computation | <code>Tracker.Computation</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | A query describing the documents to find |
+| options | <code>[MongoQueryOptions](#Collection..MongoQueryOptions)</code> | Query options, such as sort, limit, etc. |
+
+<a name="Collection..MongoQueryOptions"></a>
+
+### Collection~MongoQueryOptions : <code>Object</code>
+An options object for MongoDB queries.
+
+**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| sort | <code>Object</code> | Sort order (default: natural order) |
+| skip | <code>Number</code> | Number of results to skip at the beginning |
+| fields | <code>Object</code> | Dictionary of fields to return or exclude. |
+| reactive | <code>Boolean</code> | (Client only) Default true; pass false to disable reactivity |
+| transform | <code>function</code> | Overrides transform on the Collection for this cursor. Pass null to disable transformation. |
+
+<a name="Collection..MongoQuerySelector"></a>
+
+### Collection~MongoQuerySelector : <code>Mongo.Selector</code> &#124; <code>Mongo.ObjectID</code> &#124; <code>string</code>
+A MongoDB query selector representation.
+
+**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+<a name="Collection..MongoUpsertOptions"></a>
+
+### Collection~MongoUpsertOptions : <code>Object</code>
+A MongoDB query options for upsert action
+
+**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| multi | <code>Boolean</code> | True to modify all matching documents; false to only modify one of the matching documents (the default). |
+
+<a name="Collection..MongoUpdateOptions"></a>
+
+### Collection~MongoUpdateOptions : <code>Object</code>
+A MongoDB query options for update action
+
+**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| multi | <code>Boolean</code> | True to modify all matching documents; |
+| upsert | <code>Boolean</code> | True to use upsert logic. |
 
