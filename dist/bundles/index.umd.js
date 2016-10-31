@@ -56,8 +56,17 @@ function removeObserver(observers, observer, onEmpty) {
 }
 var gZone = g.Zone ? g.Zone.current : fakeZone;
 
+/**
+ *  A class represents a Monog.Cursor wrapped with RxJS features.
+ *  @extends Observable
+ */
 var ObservableCursor = (function (_super) {
     __extends(ObservableCursor, _super);
+    /**
+     * @constructor
+     * @extends Observable
+     * @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
+     */
     function ObservableCursor(cursor) {
         var _this = this;
         _super.call(this, function (observer) {
@@ -76,19 +85,41 @@ var ObservableCursor = (function (_super) {
         this._cursor = cursor;
         this._zone = forkZone();
     }
+    /**
+     *  Static method which creates an ObservableCursor from Mongo.Cursor.
+     *  Use this to create an ObservableCursor object from an existing Mongo.Cursor.
+     *  Prefer to create an Cursors from the ObservableCollection instance instead.
+     *
+     *  @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
+     *  @returns {ObservableCursor<T>} Wrapped Cursor.
+     */
     ObservableCursor.create = function (cursor) {
         return new ObservableCursor(cursor);
     };
     Object.defineProperty(ObservableCursor.prototype, "cursor", {
+        /**
+         * Returns the actual Mongo.Cursor that wrapped by current ObservableCursor instance.
+         * @return {Mongo.Cursor<T>} The actual MongoDB Cursor.
+         */
         get: function () {
             return this._cursor;
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * A wrapper for Mongo.Cursor.count() method - returns an Observable of number, which
+     * triggers each time there is a change in the collection, and exposes the number of
+     * objects in the collection.
+     * @returns {Observable} Observable which trigger the callback when the
+     * count of the object changes.
+     */
     ObservableCursor.prototype.collectionCount = function () {
         return this._countObserver.asObservable();
     };
+    /**
+     * Stops the observation on the cursor.
+     */
     ObservableCursor.prototype.stop = function () {
         var _this = this;
         this._zone.run(function () {
@@ -100,16 +131,36 @@ var ObservableCursor = (function (_super) {
         this._data = [];
         this._hCursor = null;
     };
+    /**
+     * Clears the Observable definition.
+     * Use this method only when the Observable is still cold, and there are no active subscriptions yet.
+     */
     ObservableCursor.prototype.dispose = function () {
         this._observers = null;
         this._cursor = null;
     };
+    /**
+     * Return all matching documents as an Array.
+     *
+     * @return {Array<T>} The array with the matching documents.
+     */
     ObservableCursor.prototype.fetch = function () {
         return this._cursor.fetch();
     };
+    /**
+     * Watch a query. Receive callbacks as the result set changes.
+     * @param {Mongo.ObserveCallbacks} callbacks - The callbacks object.
+     * @return {Meteor.LiveQueryHandle} The array with the matching documents.
+     */
     ObservableCursor.prototype.observe = function (callbacks) {
         return this._cursor.observe(callbacks);
     };
+    /**
+     * Watch a query. Receive callbacks as the result set changes.
+     * Only the differences between the old and new documents are passed to the callbacks.
+     * @param {Mongo.ObserveChangesCallbacks} callbacks - The callbacks object.
+     * @return {Meteor.LiveQueryHandle} The array with the matching documents.
+     */
     ObservableCursor.prototype.observeChanges = function (callbacks) {
         return this._cursor.observeChanges(callbacks);
     };
@@ -166,11 +217,34 @@ var ObservableCursor = (function (_super) {
 
 (function (MongoObservable) {
     'use strict';
+    /**
+     *  Creates a new MongoObservable.Collection from an existing of predefined Mongo.Collection.
+     *  Use this feature to wrap existing collections such as Meteor.users.
+     *  @param {Mongo.Collection} collection - The collection.
+     *  @returns {MongoObservable.Collection} - Wrapped collection.
+     *  @static
+     */
     function fromExisting(collection) {
         return new MongoObservable.Collection(collection);
     }
     MongoObservable.fromExisting = fromExisting;
+    /**
+     * A class represents a MongoDB collection in the client side, wrapped with RxJS
+     * Observables, so you can use it with your Angular 2 easier.
+     * The wrapper has the same API as Mongo.Collection, only the "find" method returns
+     * an ObservableCursor instead of regular Mongo.Cursor.
+     *
+     * T is a generic type - should be used with the type of the objects inside the collection.
+     */
     var Collection = (function () {
+        /**
+         *  Creates a new Mongo.Collection instance wrapped with Observable features.
+         *  @param {String | Mongo.Collection} nameOrExisting - The name of the collection. If null, creates an
+         *  unmanaged (unsynchronized) local collection. If provided an instance of existing collection, will
+         *  create a wrapper for the existing Mongo.Collection.
+         *  @param {ConstructorOptions} options - Creation options.
+         *  @constructor
+         */
         function Collection(nameOrExisting, options) {
             if (nameOrExisting instanceof Mongo.Collection) {
                 this._collection = nameOrExisting;
@@ -180,24 +254,63 @@ var ObservableCursor = (function (_super) {
             }
         }
         Object.defineProperty(Collection.prototype, "collection", {
+            /**
+             *  Returns the Mongo.Collection object that wrapped with the MongoObservable.Collection.
+             *  @returns {Mongo.Collection<T>} The Collection instance
+             */
             get: function () {
                 return this._collection;
             },
             enumerable: true,
             configurable: true
         });
+        /**
+         *  Allow users to write directly to this collection from client code, subject to limitations you define.
+         *
+         *  @returns {Boolean}
+         */
         Collection.prototype.allow = function (options) {
             return this._collection.allow(options);
         };
+        /**
+         *  Override allow rules.
+         *
+         *  @returns {Boolean}
+         */
         Collection.prototype.deny = function (options) {
             return this._collection.deny(options);
         };
+        /**
+         *  Returns the Collection object corresponding to this collection from the npm
+         *  mongodb driver module which is wrapped by Mongo.Collection.
+         *
+         *  @returns {Mongo.Collection} The Collection instance
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-rawCollection|rawCollection on Meteor documentation}
+         */
         Collection.prototype.rawCollection = function () {
             return this._collection.rawCollection();
         };
+        /**
+         *  Returns the Db object corresponding to this collection's database connection from the
+         *  npm mongodb driver module which is wrapped by Mongo.Collection.
+         *
+         *  @returns {Mongo.Db} The Db instance
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-rawDatabase|rawDatabase on Meteor documentation}
+         */
         Collection.prototype.rawDatabase = function () {
             return this._collection.rawDatabase();
         };
+        /**
+         *  Insert a document in the collection.
+         *
+         *  @param {T} doc - The document to insert. May not yet have an _id
+         *  attribute, in which case Meteor will generate one for you.
+         *  @returns {Observable<string>} Observable which completes with the inserted ObjectId
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-insert|insert on Meteor documentation}
+         */
         Collection.prototype.insert = function (doc) {
             var observers = [];
             var obs = this._createObservable(observers);
@@ -210,6 +323,14 @@ var ObservableCursor = (function (_super) {
             });
             return obs;
         };
+        /**
+         *  Remove documents from the collection.
+         *
+         *  @param {Collection~MongoQuerySelector} selector - Specifies which documents to modify
+         *  @returns {Observable<Number>} Observable which completes with the number of affected rows
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-remove|remove on Meteor documentation}
+         */
         Collection.prototype.remove = function (selector) {
             var observers = [];
             var obs = this._createObservable(observers);
@@ -222,6 +343,17 @@ var ObservableCursor = (function (_super) {
             });
             return obs;
         };
+        /**
+         *  Modify one or more documents in the collection.
+         *
+         *  @param {Collection~MongoQuerySelector} selector - Specifies which documents to modify
+         *  @param {Modifier} modifier - Specifies how to modify the documents
+         *  @param {MongoUpdateOptions} options - Update options
+         *  first argument and, if no error, the number of affected documents as the second
+         *  @returns {Observable<Number>} Observable which completes with the number of affected rows
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-update|update on Meteor documentation}
+         */
         Collection.prototype.update = function (selector, modifier, options) {
             var observers = [];
             var obs = this._createObservable(observers);
@@ -234,6 +366,18 @@ var ObservableCursor = (function (_super) {
             });
             return obs;
         };
+        /**
+         *  Finds the first document that matches the selector, as ordered by sort and skip options.
+         *
+         *  @param {Collection~MongoQuerySelector} selector - Specifies which documents to modify
+         *  @param {Modifier} modifier - Specifies how to modify the documents
+         *  @param {MongoUpsertOptions} options - Upsert options
+         *  first argument and, if no error, the number of affected documents as the second.
+         *  @returns {Observable<{numberAffected, insertedId}>} Observable which completes with an
+         *  Object that contain the keys numberAffected and insertedId.
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert|upsert on Meteor documentation}
+         */
         Collection.prototype.upsert = function (selector, modifier, options) {
             var observers = [];
             var obs = this._createObservable(observers);
@@ -246,10 +390,38 @@ var ObservableCursor = (function (_super) {
             });
             return obs;
         };
+        /**
+         *  Method has the same notation as Mongo.Collection.find, only returns Observable.
+         *
+         *  @param {Collection~MongoQuerySelector} selector - A query describing the documents to find
+         *  @param {Collection~MongoQueryOptions} options - Query options, such as sort, limit, etc.
+         *  @returns {ObservableCursor<T>} RxJS Observable wrapped with Meteor features.
+         *  @example <caption>Using Angular2 Component</caption>
+         *  const MyCollection = MongoObservable.Collection("myCollection");
+         *
+         *  class MyComponent  {
+         *     private myData: ObservableCursor<any>;
+         *
+         *     constructor() {
+         *        this.myData = MyCollection.find({}, {limit: 10});
+         *     }
+         *  }
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-find|find on Meteor documentation}
+         */
         Collection.prototype.find = function (selector, options) {
             var cursor = this._collection.find.apply(this._collection, arguments);
             return ObservableCursor.create(cursor);
         };
+        /**
+         *  Finds the first document that matches the selector, as ordered by sort and skip options.
+         *
+         *  @param {Collection~MongoQuerySelector} selector - A query describing the documents to find
+         *  @param {Collection~MongoQueryOptions} options - Query options, such as sort, limit, etc.
+         *  @returns {any} The first object, or `undefined` in case of non-existing object.
+         *
+         * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-findOne|findOne on Meteor documentation}
+         */
         Collection.prototype.findOne = function (selector, options) {
             return this._collection.findOne.apply(this._collection, arguments);
         };
@@ -265,13 +437,70 @@ var ObservableCursor = (function (_super) {
     }());
     MongoObservable.Collection = Collection;
 })(exports.MongoObservable || (exports.MongoObservable = {}));
+/**
+ * An options object for MongoDB queries.
+ * @typedef {Object} Collection~MongoQueryOptions
+ * @property {Object} sort - Sort order (default: natural order)
+ * @property {Number} skip - Number of results to skip at the beginning
+ * @property {Object} fields - Dictionary of fields to return or exclude.
+ * @property {Boolean} reactive - (Client only) Default true; pass false to disable reactivity
+ * @property {Function} transform - Overrides transform on the Collection for this cursor. Pass null to disable transformation.
+ */
+/**
+ * A MongoDB query selector representation.
+ * @typedef {(Mongo.Selector|Mongo.ObjectID|string)} Collection~MongoQuerySelector
+ */
+/**
+ * A MongoDB query options for upsert action
+ * @typedef {Object} Collection~MongoUpsertOptions
+ * @property {Boolean} multi - True to modify all matching documents;
+ * false to only modify one of the matching documents (the default).
+ */
+/**
+ * A MongoDB query options for update action
+ * @typedef {Object} Collection~MongoUpdateOptions
+ * @property {Boolean} multi - True to modify all matching documents;
+ * @property {Boolean} upsert - True to use upsert logic.
+ */
 
 function throwInvalidCallback(method) {
     throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function, \n     please remove it and use \".subscribe\" of the Observable!");
 }
+/**
+ * A class with static methods, which wraps Meteor's API and returns
+ * RxJS Observable as return value for all Meteor's API.
+ * The method's signature is the same as Metoer's, except you don't
+ * need to provide callbacks, and you need to "subscribe" instead.
+ * The functionality that wrapped in this implementation is Meteor.call,
+ * Meteor.autorun and Meteor.subscribe.
+ *
+ */
 var MeteorObservable = (function () {
     function MeteorObservable() {
     }
+    /**
+     *  Method has the same notation as Meteor.call, only without the callbacks:
+     *    MeteorObservable.call(name, [...args])
+     *
+     *  @param {String} name - Name of the method in the Meteor server
+     *  @param {any} args - Parameters that will be forwarded to the method.
+     *   after the func call to initiate change detection.
+     *  @returns {Observable<T>} - RxJS Observable, which completes when the server return a response.
+     *  @example <caption>Example using Angular2 Component</caption>
+     *  class MyComponent  {
+     *     constructor() {
+     *
+     *     }
+     *
+     *     doAction(payload) {
+     *        MeteorObservable.call("myData", payload).subscribe((response) => {
+     *           // Handle success and response from server!
+     *        }, (err) => {
+     *          // Handle error
+     *        });
+     *     }
+     *  }
+     */
     MeteorObservable.call = function (name) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
@@ -294,6 +523,57 @@ var MeteorObservable = (function () {
             ])));
         });
     };
+    /**
+     *  Method has the same notation as Meteor.subscribe, only without the callbacks:
+     *    subscribe(name, [...args])
+     *
+     *  You can use this method from any Angular2 element - such as Component, Pipe or
+     *  Service.
+     *
+     *  @param {String} name - Name of the publication in the Meteor server
+     *  @param {any} args - Parameters that will be forwarded to the publication.
+     *   after the func call to initiate change detection.
+     *  @returns {Observable} - RxJS Observable, which completes when the subscription is ready.
+     *  @example <caption>Example using Angular2 Service</caption>
+     *  class MyService {
+     *     private meteorSubscription: Observable<any>;
+     *
+     *     constructor() {
+     *
+     *     }
+     *
+     *     subscribeToData() {
+     *        this.meteorSubscription = MeteorObservable.subscribe<any>("myData").subscribe(() => {
+     *           // Subscription is ready!
+     *        });
+     *     }
+     *
+     *     unsubscribeToData() {
+     *        this.meteorSubscription.unsubscribe();
+     *     }
+     *  }
+     *
+     *  @example <caption>Example using Angular2 Component</caption>
+     *  class MyComponent implements OnInit, OnDestroy {
+     *     private meteorSubscription: Observable<any>;
+     *
+     *     constructor() {
+     *
+     *     }
+     *
+     *     ngOnInit() {
+     *        this.meteorSubscription = MeteorObservable.subscribe("myData").subscribe(() => {
+     *           // Subscription is ready!
+     *        });
+     *     }
+     *
+     *     ngOnDestroy() {
+     *        this.meteorSubscription.unsubscribe();
+     *     }
+     *  }
+     *
+     *  @see {@link http://docs.meteor.com/api/pubsub.html|Publications in Meteor documentation}
+     */
     MeteorObservable.subscribe = function (name) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
@@ -332,6 +612,25 @@ var MeteorObservable = (function () {
             };
         });
     };
+    /**
+     *  Method has the same notation as Meteor.autorun, only without the callback:
+     *    MeteorObservable.autorun()
+     *
+     *  @returns {Observable<T>} - RxJS Observable, which trigger the subscription callback
+     *  each time that Meteor Tracker detects a change.
+     *  @example <caption>Example using Angular2 Component</caption>
+     *  class MyComponent  {
+     *     constructor() {
+     *
+     *     }
+     *
+     *     doAction(payload) {
+     *        MeteorObservable.autorun().subscribe(() => {
+     *           // Handle Tracker autorun change
+     *        });
+     *     }
+     *  }
+     */
     MeteorObservable.autorun = function () {
         var zone = forkZone();
         var observers = [];

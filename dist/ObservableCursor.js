@@ -1,8 +1,17 @@
 'use strict';
 import { Observable, Subject } from 'rxjs';
 import { gZone, forkZone, removeObserver } from './utils';
+/**
+ *  A class represents a Monog.Cursor wrapped with RxJS features.
+ *  @extends Observable
+ */
 export var ObservableCursor = (function (_super) {
     __extends(ObservableCursor, _super);
+    /**
+     * @constructor
+     * @extends Observable
+     * @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
+     */
     function ObservableCursor(cursor) {
         var _this = this;
         _super.call(this, function (observer) {
@@ -21,19 +30,41 @@ export var ObservableCursor = (function (_super) {
         this._cursor = cursor;
         this._zone = forkZone();
     }
+    /**
+     *  Static method which creates an ObservableCursor from Mongo.Cursor.
+     *  Use this to create an ObservableCursor object from an existing Mongo.Cursor.
+     *  Prefer to create an Cursors from the ObservableCollection instance instead.
+     *
+     *  @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
+     *  @returns {ObservableCursor<T>} Wrapped Cursor.
+     */
     ObservableCursor.create = function (cursor) {
         return new ObservableCursor(cursor);
     };
     Object.defineProperty(ObservableCursor.prototype, "cursor", {
+        /**
+         * Returns the actual Mongo.Cursor that wrapped by current ObservableCursor instance.
+         * @return {Mongo.Cursor<T>} The actual MongoDB Cursor.
+         */
         get: function () {
             return this._cursor;
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * A wrapper for Mongo.Cursor.count() method - returns an Observable of number, which
+     * triggers each time there is a change in the collection, and exposes the number of
+     * objects in the collection.
+     * @returns {Observable} Observable which trigger the callback when the
+     * count of the object changes.
+     */
     ObservableCursor.prototype.collectionCount = function () {
         return this._countObserver.asObservable();
     };
+    /**
+     * Stops the observation on the cursor.
+     */
     ObservableCursor.prototype.stop = function () {
         var _this = this;
         this._zone.run(function () {
@@ -45,16 +76,36 @@ export var ObservableCursor = (function (_super) {
         this._data = [];
         this._hCursor = null;
     };
+    /**
+     * Clears the Observable definition.
+     * Use this method only when the Observable is still cold, and there are no active subscriptions yet.
+     */
     ObservableCursor.prototype.dispose = function () {
         this._observers = null;
         this._cursor = null;
     };
+    /**
+     * Return all matching documents as an Array.
+     *
+     * @return {Array<T>} The array with the matching documents.
+     */
     ObservableCursor.prototype.fetch = function () {
         return this._cursor.fetch();
     };
+    /**
+     * Watch a query. Receive callbacks as the result set changes.
+     * @param {Mongo.ObserveCallbacks} callbacks - The callbacks object.
+     * @return {Meteor.LiveQueryHandle} The array with the matching documents.
+     */
     ObservableCursor.prototype.observe = function (callbacks) {
         return this._cursor.observe(callbacks);
     };
+    /**
+     * Watch a query. Receive callbacks as the result set changes.
+     * Only the differences between the old and new documents are passed to the callbacks.
+     * @param {Mongo.ObserveChangesCallbacks} callbacks - The callbacks object.
+     * @return {Meteor.LiveQueryHandle} The array with the matching documents.
+     */
     ObservableCursor.prototype.observeChanges = function (callbacks) {
         return this._cursor.observeChanges(callbacks);
     };
