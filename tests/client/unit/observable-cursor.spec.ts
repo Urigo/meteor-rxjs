@@ -1,7 +1,7 @@
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Observable} from 'rxjs';
-import {ObservableCursor} from 'meteor-rxjs';
+import {ObservableCursor, MongoObservable} from 'meteor-rxjs';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/count';
@@ -170,5 +170,44 @@ describe('ObservableCursor', function () {
   it('RxJS operators should persist', () => {
     expect(observable.count).to.equal(Observable.prototype.count);
     expect(observable.map).to.equal(Observable.prototype.map);
+  });
+
+  it('Should trigger collectionCount when adding item', () => {
+    let newDoc = {name: 'newDoc'};
+    let subHandler, subCountHandler;
+    let callback = count => {
+      expect(count).to.equal(1);
+      subHandler.unsubscribe();
+      subCountHandler.unsubscribe();
+    };
+
+    subHandler = observable.subscribe();
+    subCountHandler = observable.collectionCount().subscribe(callback);
+    collection.insert(newDoc);
+  });
+
+  it('Should trigger collectionCount when adding and removing items', (done) => {
+    let newDoc = {name: 'newDoc'};
+    let subHandler, subCountHandler;
+    let c = 0;
+
+    let callback = count => {
+      if (c === 0) {
+        expect(count).to.equal(1);
+      }
+      else if (c === 1) {
+        expect(count).to.equal(0);
+        subHandler.unsubscribe();
+        subCountHandler.unsubscribe();
+        done();
+      }
+
+      c++;
+    };
+
+    subHandler = observable.subscribe();
+    subCountHandler = observable.collectionCount().subscribe(callback);
+    let id = collection.insert(newDoc);
+    collection.remove({_id: id});
   });
 });

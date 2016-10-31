@@ -1,7 +1,6 @@
 'use strict';
 
-import {Observable, Subscriber} from 'rxjs';
-
+import {Observable, Subscriber, Subject} from 'rxjs';
 import {gZone, forkZone, removeObserver} from './utils';
 
 export class ObservableCursor<T> extends Observable<T[]> {
@@ -10,6 +9,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
   private _cursor: Mongo.Cursor<T>;
   private _hCursor: Meteor.LiveQueryHandle;
   private _observers: Subscriber<T[]>[] = [];
+  private _countObserver: Subject<number> = new Subject<number>();
 
   static create<T>(cursor: Mongo.Cursor<T>): ObservableCursor<T> {
     return new ObservableCursor<T>(cursor);
@@ -28,7 +28,9 @@ export class ObservableCursor<T> extends Observable<T[]> {
           observer, () => this.stop());
       };
     });
+
     _.extend(this, _.omit(cursor, 'count', 'map'));
+
     this._cursor = cursor;
     this._zone = forkZone();
   }
@@ -37,13 +39,19 @@ export class ObservableCursor<T> extends Observable<T[]> {
     return this._cursor;
   }
 
+  collectionCount(): Observable<number> {
+    return this._countObserver.asObservable();
+  }
+
   stop() {
     this._zone.run(() => {
       this._runComplete();
     });
+
     if (this._hCursor) {
       this._hCursor.stop();
     }
+
     this._data = [];
     this._hCursor = null;
   }
@@ -66,12 +74,16 @@ export class ObservableCursor<T> extends Observable<T[]> {
   }
 
   _runComplete() {
+    this._countObserver.complete();
+
     this._observers.forEach(observer => {
       observer.complete();
     });
   }
 
   _runNext(data: Array<T>) {
+    this._countObserver.next(this._data.length);
+
     this._observers.forEach(observer => {
       observer.next(data);
     });

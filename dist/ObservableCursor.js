@@ -1,5 +1,5 @@
 'use strict';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { gZone, forkZone, removeObserver } from './utils';
 export var ObservableCursor = (function (_super) {
     __extends(ObservableCursor, _super);
@@ -16,6 +16,7 @@ export var ObservableCursor = (function (_super) {
         });
         this._data = [];
         this._observers = [];
+        this._countObserver = new Subject();
         _.extend(this, _.omit(cursor, 'count', 'map'));
         this._cursor = cursor;
         this._zone = forkZone();
@@ -30,6 +31,9 @@ export var ObservableCursor = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    ObservableCursor.prototype.collectionCount = function () {
+        return this._countObserver.asObservable();
+    };
     ObservableCursor.prototype.stop = function () {
         var _this = this;
         this._zone.run(function () {
@@ -55,11 +59,13 @@ export var ObservableCursor = (function (_super) {
         return this._cursor.observeChanges(callbacks);
     };
     ObservableCursor.prototype._runComplete = function () {
+        this._countObserver.complete();
         this._observers.forEach(function (observer) {
             observer.complete();
         });
     };
     ObservableCursor.prototype._runNext = function (data) {
+        this._countObserver.next(this._data.length);
         this._observers.forEach(function (observer) {
             observer.next(data);
         });
