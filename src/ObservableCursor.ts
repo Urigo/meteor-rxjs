@@ -3,6 +3,10 @@
 import {Observable, Subscriber, Subject} from 'rxjs';
 import {gZone, forkZone, removeObserver} from './utils';
 
+/**
+ *  A class represents a Monog.Cursor wrapped with RxJS features.
+ *  @extends Observable
+ */
 export class ObservableCursor<T> extends Observable<T[]> {
   private _zone: Zone;
   private _data: Array <T> = [];
@@ -11,10 +15,23 @@ export class ObservableCursor<T> extends Observable<T[]> {
   private _observers: Subscriber<T[]>[] = [];
   private _countObserver: Subject<number> = new Subject<number>();
 
+  /**
+   *  Static method which creates an ObservableCursor from Mongo.Cursor.
+   *  Use this to create an ObservableCursor object from an existing Mongo.Cursor.
+   *  Prefer to create an Cursors from the ObservableCollection instance instead.
+   *
+   *  @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
+   *  @returns {ObservableCursor<T>} Wrapped Cursor.
+   */
   static create<T>(cursor: Mongo.Cursor<T>): ObservableCursor<T> {
     return new ObservableCursor<T>(cursor);
   }
 
+  /**
+   * @constructor
+   * @extends Observable
+   * @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
+   */
   constructor(cursor: Mongo.Cursor<T>) {
     super((observer: Subscriber<T[]>) => {
       this._observers.push(observer);
@@ -35,14 +52,28 @@ export class ObservableCursor<T> extends Observable<T[]> {
     this._zone = forkZone();
   }
 
+  /**
+   * Returns the actual Mongo.Cursor that wrapped by current ObservableCursor instance.
+   * @return {Mongo.Cursor<T>} The actual MongoDB Cursor.
+   */
   get cursor(): Mongo.Cursor<T> {
     return this._cursor;
   }
 
+  /**
+   * A wrapper for Mongo.Cursor.count() method - returns an Observable of number, which
+   * triggers each time there is a change in the collection, and exposes the number of
+   * objects in the collection.
+   * @returns {Observable} Observable which trigger the callback when the
+   * count of the object changes.
+   */
   collectionCount(): Observable<number> {
     return this._countObserver.asObservable();
   }
 
+  /**
+   * Stops the observation on the cursor.
+   */
   stop() {
     this._zone.run(() => {
       this._runComplete();
@@ -56,19 +87,39 @@ export class ObservableCursor<T> extends Observable<T[]> {
     this._hCursor = null;
   }
 
+  /**
+   * Clears the Observable definition.
+   * Use this method only when the Observable is still cold, and there are no active subscriptions yet.
+   */
   dispose() {
     this._observers = null;
     this._cursor = null;
   }
 
+  /**
+   * Return all matching documents as an Array.
+   *
+   * @return {Array<T>} The array with the matching documents.
+   */
   fetch(): Array<T> {
     return this._cursor.fetch();
   }
 
+  /**
+   * Watch a query. Receive callbacks as the result set changes.
+   * @param {Mongo.ObserveCallbacks} callbacks - The callbacks object.
+   * @return {Meteor.LiveQueryHandle} The array with the matching documents.
+   */
   observe(callbacks: Mongo.ObserveCallbacks): Meteor.LiveQueryHandle {
     return this._cursor.observe(callbacks);
   }
 
+  /**
+   * Watch a query. Receive callbacks as the result set changes.
+   * Only the differences between the old and new documents are passed to the callbacks.
+   * @param {Mongo.ObserveChangesCallbacks} callbacks - The callbacks object.
+   * @return {Meteor.LiveQueryHandle} The array with the matching documents.
+   */
   observeChanges(callbacks: Mongo.ObserveChangesCallbacks): Meteor.LiveQueryHandle {
     return this._cursor.observeChanges(callbacks);
   }
