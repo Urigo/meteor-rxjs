@@ -182,7 +182,7 @@ export var MongoObservable;
          *
          *  @param {Collection~MongoQuerySelector} selector - A query describing the documents to find
          *  @param {Collection~MongoQueryOptions} options - Query options, such as sort, limit, etc.
-         *  @returns {ObservableCursor<T>} RxJS Observable wrapped with Meteor features.
+         *  @returns {ObservableCursor<T[]>} RxJS Observable wrapped with Meteor features.
          *  @example <caption>Using Angular2 Component</caption>
          *  const MyCollection = MongoObservable.Collection("myCollection");
          *
