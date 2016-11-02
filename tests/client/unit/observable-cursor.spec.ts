@@ -210,4 +210,23 @@ describe('ObservableCursor', function () {
     let id = collection.insert(newDoc);
     collection.remove({_id: id});
   });
+
+  it('Multiple subscription for the same Observable should replay last value', () => {
+    let wrappedCollection = MongoObservable.fromExisting(collection);
+    let observable = wrappedCollection.find({});
+
+    let spyCb1 = sinon.spy();
+    let spyCb2 = sinon.spy();
+    let firstSubscriptionHandler = observable.subscribe(spyCb1);
+    wrappedCollection.insert({test: 1});
+    wrappedCollection.insert({test: 2});
+    wrappedCollection.insert({test: 3});
+    let secondSubscriptionHandler = observable.subscribe(spyCb2);
+
+    expect(spyCb1.callCount).to.equal(3);
+    expect(spyCb2.callCount).to.equal(1);
+
+    firstSubscriptionHandler.unsubscribe();
+    secondSubscriptionHandler.unsubscribe();
+  });
 });

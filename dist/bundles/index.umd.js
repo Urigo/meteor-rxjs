@@ -392,7 +392,7 @@ var ObservableCursor = (function (_super) {
          *
          *  @param {Collection~MongoQuerySelector} selector - A query describing the documents to find
          *  @param {Collection~MongoQueryOptions} options - Query options, such as sort, limit, etc.
-         *  @returns {ObservableCursor<T>} RxJS Observable wrapped with Meteor features.
+         *  @returns {Observable<T>} RxJS Observable wrapped with Meteor features.
          *  @example <caption>Using Angular2 Component</caption>
          *  const MyCollection = MongoObservable.Collection("myCollection");
          *
@@ -408,7 +408,7 @@ var ObservableCursor = (function (_super) {
          */
         Collection.prototype.find = function (selector, options) {
             var cursor = this._collection.find.apply(this._collection, arguments);
-            return ObservableCursor.create(cursor);
+            return ObservableCursor.create(cursor).publishReplay(1).refCount();
         };
         /**
          *  Finds the first document that matches the selector, as ordered by sort and skip options.
