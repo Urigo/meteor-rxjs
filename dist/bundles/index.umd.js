@@ -66,6 +66,9 @@ var ObservableCursor = (function (_super) {
     function ObservableCursor(cursor) {
         var _this = this;
         _super.call(this, function (observer) {
+            if (_this._isDataInitinialized) {
+                observer.next(_this._data);
+            }
             _this._observers.push(observer);
             if (!_this._hCursor) {
                 _this._hCursor = _this._observeCursor(cursor);
@@ -77,6 +80,7 @@ var ObservableCursor = (function (_super) {
         this._data = [];
         this._observers = [];
         this._countObserver = new rxjs.Subject();
+        this._isDataInitinialized = false;
         _.extend(this, _.omit(cursor, 'count', 'map'));
         this._cursor = cursor;
         this._zone = forkZone();
@@ -195,6 +199,7 @@ var ObservableCursor = (function (_super) {
     
     ObservableCursor.prototype._handleChange = function () {
         var _this = this;
+        this._isDataInitinialized = true;
         this._zone.run(function () {
             _this._runNext(_this._data);
         });
@@ -408,7 +413,7 @@ var ObservableCursor = (function (_super) {
          */
         Collection.prototype.find = function (selector, options) {
             var cursor = this._collection.find.apply(this._collection, arguments);
-            return ObservableCursor.create(cursor).publishReplay(1).refCount();
+            return ObservableCursor.create(cursor);
         };
         /**
          *  Finds the first document that matches the selector, as ordered by sort and skip options.

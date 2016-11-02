@@ -10,6 +10,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
   private _hCursor: Meteor.LiveQueryHandle;
   private _observers: Subscriber<T[]>[] = [];
   private _countObserver: Subject<number> = new Subject<number>();
+  private _isDataInitinialized = false;
 
   /**
    *  Static method which creates an ObservableCursor from Mongo.Cursor.
@@ -31,6 +32,10 @@ export class ObservableCursor<T> extends Observable<T[]> {
    */
   constructor(cursor: Mongo.Cursor<T>) {
     super((observer: Subscriber<T[]>) => {
+      if (this._isDataInitinialized) {
+        observer.next(this._data);
+      }
+
       this._observers.push(observer);
 
       if (!this._hCursor) {
@@ -159,6 +164,8 @@ export class ObservableCursor<T> extends Observable<T[]> {
   };
 
   _handleChange() {
+    this._isDataInitinialized = true;
+
     this._zone.run(() => {
       this._runNext(this._data);
     });
