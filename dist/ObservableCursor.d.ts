@@ -6,6 +6,7 @@ export declare class ObservableCursor<T> extends Observable<T[]> {
     private _hCursor;
     private _observers;
     private _countObserver;
+    private _isDataInitinialized;
     /**
      *  Static method which creates an ObservableCursor from Mongo.Cursor.
      *  Use this to create an ObservableCursor object from an existing Mongo.Cursor.

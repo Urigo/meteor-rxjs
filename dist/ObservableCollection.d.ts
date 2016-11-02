@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { ObservableCursor } from './ObservableCursor';
 import Selector = Mongo.Selector;
 import ObjectID = Mongo.ObjectID;
 import SortSpecifier = Mongo.SortSpecifier;
@@ -154,7 +155,7 @@ export declare module MongoObservable {
             fields?: FieldSpecifier;
             reactive?: boolean;
             transform?: Function;
-        }): Observable<T[]>;
+        }): ObservableCursor<T>;
         /**
          *  Finds the first document that matches the selector, as ordered by sort and skip options.
          *

@@ -198,7 +198,7 @@ export var MongoObservable;
          */
         Collection.prototype.find = function (selector, options) {
             var cursor = this._collection.find.apply(this._collection, arguments);
-            return ObservableCursor.create(cursor).publishReplay(1).refCount();
+            return ObservableCursor.create(cursor);
         };
         /**
          *  Finds the first document that matches the selector, as ordered by sort and skip options.
