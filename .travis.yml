@@ -21,7 +21,7 @@ install:
 script:
   # remove unused node modules from cache
   - npm prune
-  - npm install -g tslint typescript
+  - npm install -g tslint@3.15.1 typescript@2.0.6 rollup@0.36.3
   - npm run test:ci
 
 sudo: required
