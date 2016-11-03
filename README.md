@@ -1,4 +1,7 @@
 # Meteor + RxJS
+
+[![bitHound Overall Score](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/score.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs) [![bitHound Code](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/code.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs) [![bitHound Dependencies](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/dependencies.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs/master/dependencies/npm) 
+
 Harness Meteor reactivity with RxJS.
 
 RxJS is built to simplify complexity dealing with reactive data flows. At the same time, Meteor's Minimongo cursors are a good target for RxJS API due to their reactivity. Thus, combining RxJS and Meteor, we bring together best parts of two worlds.
