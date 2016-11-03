@@ -1,0 +1,32 @@
+{
+ "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/docs/**"
+  ],
+  "test": [
+      "**/test/**",
+      "**/tests/**",
+      "**/spec/**",
+      "**/specs/**",
+      "**/*.test.ts",
+      "**/*.test.js",
+      "**/*.spec.js",
+      "**/*.spec.ts"
+    ],
+  "critics": {
+    "lint": {"engine": "tslint"}
+  },
+    "dependencies": {
+      "mute": [
+        "rxjs",
+        "jsdoc-to-markdown"
+      ],
+      "unused-ignores": [
+        "zone.js",
+        "reflect-metadata",
+        "meteor-typings",
+        "@types/*"
+      ]
+    }
+}

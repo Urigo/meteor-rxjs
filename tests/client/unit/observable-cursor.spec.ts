@@ -96,7 +96,7 @@ describe('ObservableCursor', function () {
       // 4 because: insert, insert, update, *move*
       if (count === 4) {
         let firstItem = docs[0];
-        expect(firstItem.name).to.equal("AAAA");
+        expect(firstItem.name).to.equal('AAAA');
         subHandler.unsubscribe();
         done();
       }
@@ -107,10 +107,10 @@ describe('ObservableCursor', function () {
     let objectId = collection.insert(newDoc);
 
     collection.insert({
-      name: "BBBB"
+      name: 'BBBB'
     });
 
-    collection.update({_id: objectId}, { $set: {name: "AAAA"} });
+    collection.update({_id: objectId}, { $set: {name: 'AAAA'} });
   });
 
   it('Should trigger callback twice when inserting a doc and then removing it', () => {
