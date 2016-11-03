@@ -3,6 +3,11 @@ language: node_js
 node_js:
   - "5"
 
+cache:
+  directories:
+    # cache node modules
+    - node_modules
+
 notifications:
   # disable email notification
   email: false
@@ -16,5 +21,6 @@ install:
 script:
   # remove unused node modules from cache
   - npm prune
+  - npm run test:ci
 
 sudo: required
