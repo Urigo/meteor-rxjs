@@ -1,3 +1,4 @@
+/// <reference types="meteor-typings" />
 import { Observable } from 'rxjs';
 /**
  * A class with static methods, which wraps Meteor's API and returns

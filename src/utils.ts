@@ -2,6 +2,8 @@
 
 import {Subscriber} from 'rxjs';
 
+declare let _;
+
 export declare type CallbacksObject = {
   onReady?: Function;
   onError?: Function;
@@ -27,7 +29,7 @@ declare const global;
 export const g =
   typeof global === 'object' ? global :
     typeof window === 'object' ? window :
-      typeof self === 'object' ? self : this;
+      typeof self === 'object' ? self : undefined;
 
 const METEOR_RXJS_ZONE = 'meteor-rxjs-zone';
 

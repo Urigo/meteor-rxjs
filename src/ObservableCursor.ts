@@ -3,6 +3,8 @@
 import {Observable, Subscriber, Subject} from 'rxjs';
 import {gZone, forkZone, removeObserver} from './utils';
 
+declare let _;
+
 export class ObservableCursor<T> extends Observable<T[]> {
   private _zone: Zone;
   private _data: Array <T> = [];

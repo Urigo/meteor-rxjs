@@ -12,7 +12,7 @@ export function isCallbacksObject(callbacks) {
 ;
 export var g = typeof global === 'object' ? global :
     typeof window === 'object' ? window :
-        typeof self === 'object' ? self : this;
+        typeof self === 'object' ? self : undefined;
 var METEOR_RXJS_ZONE = 'meteor-rxjs-zone';
 var fakeZone = {
     name: METEOR_RXJS_ZONE,
