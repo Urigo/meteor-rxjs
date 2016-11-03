@@ -16,8 +16,7 @@
   "scripts": {
     "changelog": "$(npm bin)/conventional-changelog -p meteor-rxjs -i CHANGELOG.md -s -r 0",
     "docs": "./generate-docs.sh",
-    "typings": "typings i",
-    "prebuild": "npm run typings && npm run lint",
+    "prebuild": "npm run lint",
     "build": "npm run build-only && npm run bundle && npm run docs",
     "prepublish": "npm run build",
     "build-only": "tsc || echo not ok",
