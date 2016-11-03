@@ -1,0 +1,10 @@
+<div>
+  <h1>Angular 2 with Meteor-RxJS Example</h1>
+  <br/>
+  Items:
+  <ul>
+    <li *ngFor="let item of items | async">
+      {{ item._id }}
+    </li>
+  </ul>
+</div>
