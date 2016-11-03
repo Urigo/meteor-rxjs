@@ -1,6 +1,6 @@
 # Meteor + RxJS
 
-[![bitHound Overall Score](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/score.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs) [![bitHound Code](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/code.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs) [![bitHound Dependencies](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/dependencies.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs/master/dependencies/npm) 
+[![Build Status](https://travis-ci.org/Urigo/meteor-rxjs.svg?branch=master)](https://travis-ci.org/Urigo/meteor-rxjs) [![bitHound Overall Score](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/score.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs) [![bitHound Code](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/code.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs) [![bitHound Dependencies](https://www.bithound.io/github/Urigo/meteor-rxjs/badges/dependencies.svg)](https://www.bithound.io/github/Urigo/meteor-rxjs/master/dependencies/npm) 
 
 Harness Meteor reactivity with RxJS.
 
