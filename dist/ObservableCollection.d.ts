@@ -135,7 +135,7 @@ export declare module MongoObservable {
          *
          *  @param {Collection~MongoQuerySelector} selector - A query describing the documents to find
          *  @param {Collection~MongoQueryOptions} options - Query options, such as sort, limit, etc.
-         *  @returns {ObservableCursor<T[]>} RxJS Observable wrapped with Meteor features.
+         *  @returns {ObservableCursor<T>} RxJS Observable wrapped with Meteor features.
          *  @example <caption>Using Angular2 Component</caption>
          *  const MyCollection = MongoObservable.Collection("myCollection");
          *
@@ -156,7 +156,7 @@ export declare module MongoObservable {
             fields?: FieldSpecifier;
             reactive?: boolean;
             transform?: Function;
-        }): ObservableCursor<T[]>;
+        }): ObservableCursor<T>;
         /**
          *  Finds the first document that matches the selector, as ordered by sort and skip options.
          *

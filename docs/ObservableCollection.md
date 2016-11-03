@@ -22,7 +22,7 @@ T is a generic type - should be used with the type of the objects inside the col
         * [.remove(selector)](#Collection+remove) ⇒ <code>Observable.&lt;Number&gt;</code>
         * [.update(selector, modifier, options)](#Collection+update) ⇒ <code>Observable.&lt;Number&gt;</code>
         * [.upsert(selector, modifier, options)](#Collection+upsert) ⇒ <code>Observable.&lt;{numberAffected, insertedId}&gt;</code>
-        * [.find(selector, options)](#Collection+find) ⇒ <code>ObservableCursor.&lt;Array.&lt;T&gt;&gt;</code>
+        * [.find(selector, options)](#Collection+find) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
         * [.findOne(selector, options)](#Collection+findOne) ⇒ <code>any</code>
     * _inner_
         * [~MongoQueryOptions](#Collection..MongoQueryOptions) : <code>Object</code>
@@ -137,11 +137,11 @@ Finds the first document that matches the selector, as ordered by sort and skip 
 
 <a name="Collection+find"></a>
 
-### collection.find(selector, options) ⇒ <code>ObservableCursor.&lt;Array.&lt;T&gt;&gt;</code>
+### collection.find(selector, options) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
 Method has the same notation as Mongo.Collection.find, only returns Observable.
 
 **Kind**: instance method of <code>[Collection](#Collection)</code>  
-**Returns**: <code>ObservableCursor.&lt;Array.&lt;T&gt;&gt;</code> - RxJS Observable wrapped with Meteor features.  
+**Returns**: <code>ObservableCursor.&lt;T&gt;</code> - RxJS Observable wrapped with Meteor features.  
 **See**: [find on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-find)  
 
 | Param | Type | Description |
