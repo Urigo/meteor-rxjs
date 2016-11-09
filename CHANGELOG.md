@@ -1,9 +1,11 @@
-<a name="0.4.3"></a>
-## 0.4.3 (2016-11-03)
+<a name="0.4.4"></a>
+## 0.4.4 (2016-11-09)
 
 * chore(changelog): Added auto generated changelog ([80dfa46](https://github.com/Urigo/mongo-rxjs-observable/commit/80dfa46))
+* chore(changelog): updated based on commits ([88e11a6](https://github.com/Urigo/mongo-rxjs-observable/commit/88e11a6))
 * chore(lint): Added bitHound badges ([7c034f1](https://github.com/Urigo/mongo-rxjs-observable/commit/7c034f1))
 * chore(lint): Added bitHound, Updated dependencies and lint issues ([36dfe7f](https://github.com/Urigo/mongo-rxjs-observable/commit/36dfe7f))
+* chore(npmignore): Added npm ignore file ([b914e13](https://github.com/Urigo/mongo-rxjs-observable/commit/b914e13))
 * chore(package.json): bump version ([21ccc90](https://github.com/Urigo/mongo-rxjs-observable/commit/21ccc90))
 * chore(README): Updated badge ([efbd509](https://github.com/Urigo/mongo-rxjs-observable/commit/efbd509))
 * chore(release): bump ([c6f9bba](https://github.com/Urigo/mongo-rxjs-observable/commit/c6f9bba))
