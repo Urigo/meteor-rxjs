@@ -1,5 +1,5 @@
 <a name="0.4.4"></a>
-## 0.4.3 (2016-11-03)
+## 0.4.4 (2016-11-09)
 
 * chore(npmignore): Added npmignore files in order to create a clean package without examples and other configs/json files.
 
