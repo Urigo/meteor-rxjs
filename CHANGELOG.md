@@ -1,5 +1,10 @@
 <a name="0.4.4"></a>
-## 0.4.4 (2016-11-09)
+## 0.4.3 (2016-11-03)
+
+* chore(npmignore): Added npmignore files in order to create a clean package without examples and other configs/json files.
+
+<a name="0.4.3"></a>
+## 0.4.3 (2016-11-03)
 
 * chore(changelog): Added auto generated changelog ([80dfa46](https://github.com/Urigo/mongo-rxjs-observable/commit/80dfa46))
 * chore(changelog): updated based on commits ([88e11a6](https://github.com/Urigo/mongo-rxjs-observable/commit/88e11a6))
