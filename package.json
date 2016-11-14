@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "meteor-typings": "1.3.1",
-    "@types/mocha": "2.2.32",
+    "@types/mocha": "2.2.33",
     "@types/underscore": "1.7.33",
     "conventional-changelog": "1.1.0",
     "conventional-changelog-cli": "1.2.0",
