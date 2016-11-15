@@ -1,16 +1,38 @@
+<a name="0.4.5"></a>
+## 0.4.5 (2016-11-15)
+
+* chore(changelog): Minor fix ([49049a9](https://github.com/Urigo/mongo-rxjs-observable/commit/49049a9))
+* chore(changelog): Updated changelog files ([025e825](https://github.com/Urigo/mongo-rxjs-observable/commit/025e825))
+* chore(compiler): fixed compiler version ([1d9cb43](https://github.com/Urigo/mongo-rxjs-observable/commit/1d9cb43))
+* chore(package): added greenkeeper config ([385c8c5](https://github.com/Urigo/mongo-rxjs-observable/commit/385c8c5))
+* chore(package): update @types/mocha to version 2.2.33 ([947f930](https://github.com/Urigo/mongo-rxjs-observable/commit/947f930))
+* chore(package): update typescript to version 2.0.9 ([05e2320](https://github.com/Urigo/mongo-rxjs-observable/commit/05e2320))
+* chore(README): Added npm version badge ([5e142cf](https://github.com/Urigo/mongo-rxjs-observable/commit/5e142cf))
+* chore(tests): added yarn lock file to tests app ([8edbe83](https://github.com/Urigo/mongo-rxjs-observable/commit/8edbe83))
+* chore(tests): fixes for missing package dependency ([572db5a](https://github.com/Urigo/mongo-rxjs-observable/commit/572db5a))
+* chore(tests): reverted yarn from tests app ([ab7da65](https://github.com/Urigo/mongo-rxjs-observable/commit/ab7da65))
+* chore(tests): updated tests application to use latest Meteor ([c3e40f6](https://github.com/Urigo/mongo-rxjs-observable/commit/c3e40f6))
+* chore(version): bump ([fbdddb9](https://github.com/Urigo/mongo-rxjs-observable/commit/fbdddb9))
+* chore(yarn): use yarn and added missing typings file ([ffdaa8f](https://github.com/Urigo/mongo-rxjs-observable/commit/ffdaa8f))
+
+
+
 <a name="0.4.4"></a>
 ## 0.4.4 (2016-11-09)
 
-* chore(npmignore): Added npmignore files in order to create a clean package without examples and other configs/json files.
+* chore(changelog): update CHANGELOG ([b3584de](https://github.com/Urigo/mongo-rxjs-observable/commit/b3584de))
+* chore(changelog): updated based on commits ([88e11a6](https://github.com/Urigo/mongo-rxjs-observable/commit/88e11a6))
+* chore(npmignore): Added npm ignore file ([b914e13](https://github.com/Urigo/mongo-rxjs-observable/commit/b914e13))
+* chore(package): update dependencies ([2296123](https://github.com/Urigo/mongo-rxjs-observable/commit/2296123))
+
+
 
 <a name="0.4.3"></a>
 ## 0.4.3 (2016-11-03)
 
 * chore(changelog): Added auto generated changelog ([80dfa46](https://github.com/Urigo/mongo-rxjs-observable/commit/80dfa46))
-* chore(changelog): updated based on commits ([88e11a6](https://github.com/Urigo/mongo-rxjs-observable/commit/88e11a6))
 * chore(lint): Added bitHound badges ([7c034f1](https://github.com/Urigo/mongo-rxjs-observable/commit/7c034f1))
 * chore(lint): Added bitHound, Updated dependencies and lint issues ([36dfe7f](https://github.com/Urigo/mongo-rxjs-observable/commit/36dfe7f))
-* chore(npmignore): Added npm ignore file ([b914e13](https://github.com/Urigo/mongo-rxjs-observable/commit/b914e13))
 * chore(package.json): bump version ([21ccc90](https://github.com/Urigo/mongo-rxjs-observable/commit/21ccc90))
 * chore(README): Updated badge ([efbd509](https://github.com/Urigo/mongo-rxjs-observable/commit/efbd509))
 * chore(release): bump ([c6f9bba](https://github.com/Urigo/mongo-rxjs-observable/commit/c6f9bba))
