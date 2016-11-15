@@ -193,3 +193,4 @@ export var MeteorObservable = (function () {
     };
     return MeteorObservable;
 }());
+//# sourceMappingURL=MeteorObservable.js.map

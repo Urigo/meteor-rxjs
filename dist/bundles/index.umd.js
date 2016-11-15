@@ -56,6 +56,11 @@ function removeObserver(observers, observer, onEmpty) {
 }
 var gZone = g.Zone ? g.Zone.current : fakeZone;
 
+var __extends = (undefined && undefined.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var ObservableCursor = (function (_super) {
     __extends(ObservableCursor, _super);
     /**
@@ -658,6 +663,11 @@ var MeteorObservable = (function () {
     return MeteorObservable;
 }());
 
+var __extends$1 = (undefined && undefined.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 function zone(zone) {
     return this.lift(new ZoneOperator(zone || getZone()));
 }
@@ -671,7 +681,7 @@ var ZoneOperator = (function () {
     return ZoneOperator;
 }());
 var ZoneSubscriber = (function (_super) {
-    __extends(ZoneSubscriber, _super);
+    __extends$1(ZoneSubscriber, _super);
     function ZoneSubscriber(destination, zone) {
         _super.call(this, destination);
         this.zone = zone;

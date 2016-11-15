@@ -1,4 +1,9 @@
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 import { Observable, Subscriber } from 'rxjs';
 import { getZone } from './utils';
 export function zone(zone) {
@@ -40,3 +45,4 @@ var ZoneSubscriber = (function (_super) {
     return ZoneSubscriber;
 }(Subscriber));
 Observable.prototype.zone = zone;
+//# sourceMappingURL=zone.js.map

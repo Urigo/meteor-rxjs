@@ -249,3 +249,4 @@ export var MongoObservable;
  * @property {Boolean} multi - True to modify all matching documents;
  * @property {Boolean} upsert - True to use upsert logic.
  */
+//# sourceMappingURL=ObservableCollection.js.map
