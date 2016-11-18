@@ -11,6 +11,7 @@
     "typescript"
   ],
   "main": "dist/bundles/index.umd.js",
+  "module": "dist/index.js",
   "browser": "dist/bundles/index.umd.js",
   "typings": "dist/index.d.ts",
   "scripts": {
