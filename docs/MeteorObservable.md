@@ -1,12 +1,14 @@
 <a name="MeteorObservable"></a>
 
 ## MeteorObservable
-A class with static methods, which wraps Meteor's API and returns
-RxJS Observable as return value for all Meteor's API.
-The method's signature is the same as Metoer's, except you don't
-need to provide callbacks, and you need to "subscribe" instead.
-The functionality that wrapped in this implementation is Meteor.call,
-Meteor.autorun and Meteor.subscribe.
+This is a class with static methods that wrap Meteor's API and return RxJS
+Observables. The methods' signatures are the same as Meteor's, with the ]
+exception that the callbacks are handled by Meteor-rxjs. Instead of
+providing callbacks, you need to subscribe to the observables that are
+returned. The methods that are wrapped in MeteorObservable are
+[Meteor.call](https://docs.meteor.com/api/methods.html#Meteor-call),
+[Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
+and [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe).
 
 **Kind**: global class  
 
@@ -18,15 +20,20 @@ Meteor.autorun and Meteor.subscribe.
 <a name="MeteorObservable.call"></a>
 
 ### MeteorObservable.call(name, ...args) ⇒ <code>Observable.&lt;T&gt;</code>
-Method has the same notation as Meteor.call, only without the callbacks:
+Invokes a [Meteor Method](https://docs.meteor.com/api/methods.html)
+defined on the server, passing any number of arguments. This method has
+the same signature as
+[Meteor.call](https://docs.meteor.com/api/methods.html#Meteor-call), only
+without the callbacks:
    MeteorObservable.call(name, [...args])
 
 **Kind**: static method of <code>[MeteorObservable](#MeteorObservable)</code>  
-**Returns**: <code>Observable.&lt;T&gt;</code> - - RxJS Observable, which completes when the server return a response.  
+**Returns**: <code>Observable.&lt;T&gt;</code> - - RxJS Observable, which completes when the
+ server returns a response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | Name of the method in the Meteor server |
+| name | <code>string</code> | Name of the method in the Meteor server |
 | ...args | <code>any</code> | Parameters that will be forwarded to the method.   after the func call to initiate change detection. |
 
 **Example** *(Example using Angular2 Component)*  
@@ -48,19 +55,23 @@ Method has the same notation as Meteor.call, only without the callbacks:
 <a name="MeteorObservable.subscribe"></a>
 
 ### MeteorObservable.subscribe(name, ...args) ⇒ <code>Observable</code>
-Method has the same notation as Meteor.subscribe, only without the callbacks:
+When you subscribe to a collection, it tells the server to send records to
+the client. This method has the same signature as
+[Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe),
+except without the callbacks again:
    subscribe(name, [...args])
 
- You can use this method from any Angular2 element - such as Component, Pipe or
- Service.
+ You can use this method from any Angular2 element - such as Component,
+ Pipe or Service.
 
 **Kind**: static method of <code>[MeteorObservable](#MeteorObservable)</code>  
-**Returns**: <code>Observable</code> - - RxJS Observable, which completes when the subscription is ready.  
+**Returns**: <code>Observable</code> - - RxJS Observable, which completes when the
+ subscription is ready.  
 **See**: [Publications in Meteor documentation](http://docs.meteor.com/api/pubsub.html)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>String</code> | Name of the publication in the Meteor server |
+| name | <code>string</code> | Name of the publication in the Meteor server |
 | ...args | <code>any</code> | Parameters that will be forwarded to the publication.   after the func call to initiate change detection. |
 
 **Example** *(Example using Angular2 Service)*  
@@ -110,7 +121,10 @@ Method has the same notation as Meteor.subscribe, only without the callbacks:
 <a name="MeteorObservable.autorun"></a>
 
 ### MeteorObservable.autorun() ⇒ <code>Observable.&lt;T&gt;</code>
-Method has the same notation as Meteor.autorun, only without the callback:
+Allows you to run a function every time there is a change is a reactive
+data sources. This method has the same signature as
+[Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun),
+only without the callback:
    MeteorObservable.autorun()
 
 **Kind**: static method of <code>[MeteorObservable](#MeteorObservable)</code>  
