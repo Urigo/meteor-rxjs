@@ -3,6 +3,8 @@
 import {Observable, Subscriber} from 'rxjs';
 import {isMeteorCallbacks, forkZone, removeObserver} from './utils';
 
+let liveSubscriptions = [];
+
 function throwInvalidCallback(method: string) {
   throw new Error(
     `Invalid ${method} arguments:
@@ -161,10 +163,28 @@ export class MeteorObservable {
       // Execute subscribe lazily.
       if (subHandler === null) {
         subHandler = subscribe();
+        if (liveSubscriptions.find(sub => sub === subHandler.subscriptionId)) {
+          // subscription already exists, call observer.next() since Meteor won't.
+          observer.next();
+        } else {
+          liveSubscriptions.push(subHandler.subscriptionId);
+        }
       }
       return () => {
         removeObserver(observers,
-          observer, () => subHandler.stop());
+          observer, () => {
+            // remove subscription from liveSubscriptions list
+            let i = liveSubscriptions.findIndex(
+              sub => sub === subHandler.subscriptionId
+            );
+
+            if (i > -1) {
+              liveSubscriptions.splice(i, 1);
+            }
+
+            subHandler.stop();
+
+          });
       };
     });
   }

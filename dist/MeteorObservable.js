@@ -1,6 +1,7 @@
 'use strict';
 import { Observable } from 'rxjs';
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
+var liveSubscriptions = [];
 function throwInvalidCallback(method) {
     throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function, \n     please remove it and use \".subscribe\" of the Observable!");
 }
@@ -157,9 +158,23 @@ export var MeteorObservable = (function () {
             // Execute subscribe lazily.
             if (subHandler === null) {
                 subHandler = subscribe();
+                if (liveSubscriptions.find(function (sub) { return sub === subHandler.subscriptionId; })) {
+                    // subscription already exists, call observer.next() since Meteor won't.
+                    observer.next();
+                }
+                else {
+                    liveSubscriptions.push(subHandler.subscriptionId);
+                }
             }
             return function () {
-                removeObserver(observers, observer, function () { return subHandler.stop(); });
+                removeObserver(observers, observer, function () {
+                    // remove subscription from liveSubscriptions list
+                    var i = liveSubscriptions.findIndex(function (sub) { return sub === subHandler.subscriptionId; });
+                    if (i > -1) {
+                        liveSubscriptions.splice(i, 1);
+                    }
+                    subHandler.stop();
+                });
             };
         });
     };
