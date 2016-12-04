@@ -46,7 +46,7 @@
     "@types/chai": "^3.4.34",
     "conventional-changelog": "1.1.0",
     "conventional-changelog-cli": "1.2.0",
-    "es6-shim": "0.35.1",
+    "es6-shim": "0.35.2",
     "ghooks": "1.3.2",
     "jsdoc-to-markdown": "2.0.1",
     "meteor-typings": "1.3.1",
