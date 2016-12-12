@@ -21,6 +21,7 @@
     "dependencies": {
       "mute": [
         "rxjs",
+        "zone.js",
         "jsdoc-to-markdown"
       ],
       "unused-ignores": [
