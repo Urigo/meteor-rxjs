@@ -35,7 +35,6 @@
         "conventional-changelog-cli",
         "zone.js",
         "reflect-metadata",
-        "meteor-typings",
         "@types/*"
       ]
     }
