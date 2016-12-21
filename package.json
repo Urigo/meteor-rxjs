@@ -20,7 +20,7 @@
     "build": "npm run build-only && npm run bundle && npm run docs",
     "prepublish": "npm run build",
     "build-only": "tsc || echo not ok",
-    "pretest": "cd tests && rm -rf node_modules && npm install && meteor update && meteor npm rebuild",
+    "pretest": "meteor npm rebuild && cd tests && rm -rf node_modules && npm install && meteor update && meteor npm rebuild",
     "test-ci": "npm run pretest && cd tests && meteor test --once --driver-package dispatch:mocha-phantomjs",
     "test": "cd tests && meteor test --driver-package dispatch:mocha-phantomjs",
     "lint": "tslint src/**/*.ts",
