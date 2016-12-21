@@ -69,8 +69,7 @@ var ObservableCursor = (function (_super) {
      * @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
      */
     function ObservableCursor(cursor) {
-        var _this = this;
-        _super.call(this, function (observer) {
+        var _this = _super.call(this, function (observer) {
             if (_this._isDataInitinialized) {
                 observer.next(_this._data);
             }
@@ -81,14 +80,15 @@ var ObservableCursor = (function (_super) {
             return function () {
                 removeObserver(_this._observers, observer, function () { return _this.stop(); });
             };
-        });
-        this._data = [];
-        this._observers = [];
-        this._countObserver = new rxjs.Subject();
-        this._isDataInitinialized = false;
-        _.extend(this, _.omit(cursor, 'count', 'map'));
-        this._cursor = cursor;
-        this._zone = forkZone();
+        }) || this;
+        _this._data = [];
+        _this._observers = [];
+        _this._countObserver = new rxjs.Subject();
+        _this._isDataInitinialized = false;
+        _.extend(_this, _.omit(cursor, 'count', 'map'));
+        _this._cursor = cursor;
+        _this._zone = forkZone();
+        return _this;
     }
     /**
      *  Static method which creates an ObservableCursor from Mongo.Cursor.
@@ -699,8 +699,9 @@ var ZoneOperator = (function () {
 var ZoneSubscriber = (function (_super) {
     __extends$1(ZoneSubscriber, _super);
     function ZoneSubscriber(destination, zone) {
-        _super.call(this, destination);
-        this.zone = zone;
+        var _this = _super.call(this, destination) || this;
+        _this.zone = zone;
+        return _this;
     }
     ZoneSubscriber.prototype._next = function (value) {
         var _this = this;
