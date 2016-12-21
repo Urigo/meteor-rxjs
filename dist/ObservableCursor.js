@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 import { Observable, Subject } from 'rxjs';
 import { gZone, forkZone, removeObserver } from './utils';
-export var ObservableCursor = (function (_super) {
+var ObservableCursor = (function (_super) {
     __extends(ObservableCursor, _super);
     /**
      * @constructor
@@ -14,8 +14,7 @@ export var ObservableCursor = (function (_super) {
      * @param {Mongo.Cursor<T>} cursor - The Mongo.Cursor to wrap.
      */
     function ObservableCursor(cursor) {
-        var _this = this;
-        _super.call(this, function (observer) {
+        var _this = _super.call(this, function (observer) {
             if (_this._isDataInitinialized) {
                 observer.next(_this._data);
             }
@@ -26,14 +25,15 @@ export var ObservableCursor = (function (_super) {
             return function () {
                 removeObserver(_this._observers, observer, function () { return _this.stop(); });
             };
-        });
-        this._data = [];
-        this._observers = [];
-        this._countObserver = new Subject();
-        this._isDataInitinialized = false;
-        _.extend(this, _.omit(cursor, 'count', 'map'));
-        this._cursor = cursor;
-        this._zone = forkZone();
+        }) || this;
+        _this._data = [];
+        _this._observers = [];
+        _this._countObserver = new Subject();
+        _this._isDataInitinialized = false;
+        _.extend(_this, _.omit(cursor, 'count', 'map'));
+        _this._cursor = cursor;
+        _this._zone = forkZone();
+        return _this;
     }
     /**
      *  Static method which creates an ObservableCursor from Mongo.Cursor.
@@ -166,4 +166,5 @@ export var ObservableCursor = (function (_super) {
     };
     return ObservableCursor;
 }(Observable));
+export { ObservableCursor };
 //# sourceMappingURL=ObservableCursor.js.map

@@ -1,4 +1,4 @@
-/// <reference types="@types/meteor" />
+/// <reference types="meteor" />
 import { Observable } from 'rxjs';
 /**
  * This is a class with static methods that wrap Meteor's API and return RxJS

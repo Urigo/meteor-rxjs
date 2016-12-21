@@ -114,7 +114,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
    * @param {Mongo.ObserveCallbacks} callbacks - The callbacks object.
    * @return {Meteor.LiveQueryHandle} The array with the matching documents.
    */
-  observe(callbacks: Mongo.ObserveCallbacks): Meteor.LiveQueryHandle {
+  observe(callbacks: Object): Meteor.LiveQueryHandle {
     return this._cursor.observe(callbacks);
   }
 
@@ -124,7 +124,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
    * @param {Mongo.ObserveChangesCallbacks} callbacks - The callbacks object.
    * @return {Meteor.LiveQueryHandle} The array with the matching documents.
    */
-  observeChanges(callbacks: Mongo.ObserveChangesCallbacks): Meteor.LiveQueryHandle {
+  observeChanges(callbacks: Object): Meteor.LiveQueryHandle {
     return this._cursor.observeChanges(callbacks);
   }
 
