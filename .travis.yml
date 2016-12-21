@@ -1,23 +1,18 @@
+sudo: required
 language: node_js
-
 node_js:
-  - "5"
-
-notifications:
-  # disable email notification
-  email: false
-
+  - "6"
 services:
   - mongodb
+before_install:
+  - curl https://install.meteor.com | /bin/sh
+  - rm -rf node_modules
 
 install:
-  - curl https://install.meteor.com | /bin/sh
+  - git clean -fXd
+  - npm install -g phantomjs-prebuilt tslint typescript rollup
+  - npm install
+  - cd tests && meteor npm rebuild && cd ..
 
 script:
-  # remove unused node modules from cache
-  - rm -rf node_modules
-  - npm install -g tslint@3.15.1 typescript@2.0.6 rollup@0.36.3 yarn
-  - yarn
-  - npm run test:ci
-
-sudo: required
+  - npm run test-ci
