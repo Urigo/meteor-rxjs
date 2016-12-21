@@ -1,7 +1,43 @@
+<a name="0.4.6"></a>
+## 0.4.6 (2016-12-21)
+
+* chore: add ref to the main ES6 module in package.json (for bundling) ([b5f7bab](https://github.com/Urigo/mongo-rxjs-observable/commit/b5f7bab))
+* chore: remove browser from package.json (not needed) ([6b30a15](https://github.com/Urigo/mongo-rxjs-observable/commit/6b30a15))
+* chore(bithound): fixed unused ([7353c76](https://github.com/Urigo/mongo-rxjs-observable/commit/7353c76))
+* chore(bithound): ignore examples directory ([00f6712](https://github.com/Urigo/mongo-rxjs-observable/commit/00f6712))
+* chore(bithound): ignore zone.js ([2364061](https://github.com/Urigo/mongo-rxjs-observable/commit/2364061))
+* chore(build): fixed build ([28ac86a](https://github.com/Urigo/mongo-rxjs-observable/commit/28ac86a))
+* chore(dependencies): updated tslint ([d979b06](https://github.com/Urigo/mongo-rxjs-observable/commit/d979b06))
+* chore(deps): update rxjs ([48967df](https://github.com/Urigo/mongo-rxjs-observable/commit/48967df))
+* chore(license): add license file ([edf365c](https://github.com/Urigo/mongo-rxjs-observable/commit/edf365c))
+* chore(package): update @types/mocha to version 2.2.34 ([5de0f13](https://github.com/Urigo/mongo-rxjs-observable/commit/5de0f13))
+* chore(package): update @types/underscore to version 1.7.34 ([54b6e15](https://github.com/Urigo/mongo-rxjs-observable/commit/54b6e15))
+* chore(package): update @types/underscore to version 1.7.35 ([2962f0e](https://github.com/Urigo/mongo-rxjs-observable/commit/2962f0e))
+* chore(package): update @types/underscore to version 1.7.36 ([f863cc9](https://github.com/Urigo/mongo-rxjs-observable/commit/f863cc9))
+* chore(package): update es6-shim to version 0.35.2 ([7a69239](https://github.com/Urigo/mongo-rxjs-observable/commit/7a69239))
+* chore(package): update rollup to version 0.36.4 ([5f727a5](https://github.com/Urigo/mongo-rxjs-observable/commit/5f727a5))
+* chore(package): update rollup to version 0.37.0 ([d00522e](https://github.com/Urigo/mongo-rxjs-observable/commit/d00522e))
+* chore(package): update rollup to version 0.37.1 ([24cd297](https://github.com/Urigo/mongo-rxjs-observable/commit/24cd297))
+* chore(package): update tslint to version 4.0.1 ([36aecea](https://github.com/Urigo/mongo-rxjs-observable/commit/36aecea))
+* chore(package): update tslint to version 4.1.0 ([cb0d60a](https://github.com/Urigo/mongo-rxjs-observable/commit/cb0d60a))
+* chore(package): update typescript to version 2.0.10 ([daacf21](https://github.com/Urigo/mongo-rxjs-observable/commit/daacf21))
+* chore(package): update typescript to version 2.1.4 ([1226d43](https://github.com/Urigo/mongo-rxjs-observable/commit/1226d43))
+* chore(package): update zone.js to version 0.7.3 ([4aec29a](https://github.com/Urigo/mongo-rxjs-observable/commit/4aec29a))
+* chore(package): update zone.js to version 0.7.4 ([4a322e3](https://github.com/Urigo/mongo-rxjs-observable/commit/4a322e3))
+* chore(sourcemap): added missing source map files ([4d62b9c](https://github.com/Urigo/mongo-rxjs-observable/commit/4d62b9c))
+* chore(types): some minor fixes for new typings ([cc7215c](https://github.com/Urigo/mongo-rxjs-observable/commit/cc7215c))
+* removed old tslint config ([e6530b2](https://github.com/Urigo/mongo-rxjs-observable/commit/e6530b2))
+* Replace 'meteor-typings' with '@types/meteor' ([b0d35e1](https://github.com/Urigo/mongo-rxjs-observable/commit/b0d35e1))
+* Update documentation for MeteorObservable ([c7816ba](https://github.com/Urigo/mongo-rxjs-observable/commit/c7816ba))
+* docs(MeteorObservable): Generated new docs ([0b56dd6](https://github.com/Urigo/mongo-rxjs-observable/commit/0b56dd6))
+
+
+
 <a name="0.4.5"></a>
 ## 0.4.5 (2016-11-15)
 
 * chore(changelog): Minor fix ([49049a9](https://github.com/Urigo/mongo-rxjs-observable/commit/49049a9))
+* chore(changelog): updated changelog ([ec411b5](https://github.com/Urigo/mongo-rxjs-observable/commit/ec411b5))
 * chore(changelog): Updated changelog files ([025e825](https://github.com/Urigo/mongo-rxjs-observable/commit/025e825))
 * chore(compiler): fixed compiler version ([1d9cb43](https://github.com/Urigo/mongo-rxjs-observable/commit/1d9cb43))
 * chore(package): added greenkeeper config ([385c8c5](https://github.com/Urigo/mongo-rxjs-observable/commit/385c8c5))

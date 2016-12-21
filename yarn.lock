@@ -1391,9 +1391,9 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rollup@0.37.0:
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.37.0.tgz#759a51708ac08b027597babff171a026cf712d8d"
+rollup@0.37.1:
+  version "0.37.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.37.1.tgz#eb238f044dbbaeb0a7868afaa6c3333cc4afe2eb"
   dependencies:
     source-map-support "^0.4.0"
 
