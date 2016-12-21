@@ -1,4 +1,4 @@
-/// <reference types="meteor" />
+/// <reference types="@types/meteor" />
 import { Observable } from 'rxjs';
 import { ObservableCursor } from './ObservableCursor';
 import Selector = Mongo.Selector;

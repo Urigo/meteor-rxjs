@@ -11,10 +11,15 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": [
+      "zone.js",
+      "@types/chai",
+      "@types/meteor",
+      "@types/underscore"
+    ]
   },
   "files": [
-    "typings.d.ts",
     "src/index.ts"
   ],
   "exclude": [
