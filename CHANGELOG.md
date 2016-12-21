@@ -1,5 +1,5 @@
-<a name="0.4.6"></a>
-## 0.4.6 (2016-12-21)
+<a name="0.4.7"></a>
+## 0.4.7 (2016-12-21)
 
 * chore: add ref to the main ES6 module in package.json (for bundling) ([b5f7bab](https://github.com/Urigo/mongo-rxjs-observable/commit/b5f7bab))
 * chore: remove browser from package.json (not needed) ([6b30a15](https://github.com/Urigo/mongo-rxjs-observable/commit/6b30a15))
@@ -7,6 +7,7 @@
 * chore(bithound): ignore examples directory ([00f6712](https://github.com/Urigo/mongo-rxjs-observable/commit/00f6712))
 * chore(bithound): ignore zone.js ([2364061](https://github.com/Urigo/mongo-rxjs-observable/commit/2364061))
 * chore(build): fixed build ([28ac86a](https://github.com/Urigo/mongo-rxjs-observable/commit/28ac86a))
+* chore(dependencies): cleanup and generated dist ([f4debe4](https://github.com/Urigo/mongo-rxjs-observable/commit/f4debe4))
 * chore(dependencies): updated tslint ([d979b06](https://github.com/Urigo/mongo-rxjs-observable/commit/d979b06))
 * chore(deps): update rxjs ([48967df](https://github.com/Urigo/mongo-rxjs-observable/commit/48967df))
 * chore(license): add license file ([edf365c](https://github.com/Urigo/mongo-rxjs-observable/commit/edf365c))
@@ -26,6 +27,8 @@
 * chore(package): update zone.js to version 0.7.4 ([4a322e3](https://github.com/Urigo/mongo-rxjs-observable/commit/4a322e3))
 * chore(sourcemap): added missing source map files ([4d62b9c](https://github.com/Urigo/mongo-rxjs-observable/commit/4d62b9c))
 * chore(types): some minor fixes for new typings ([cc7215c](https://github.com/Urigo/mongo-rxjs-observable/commit/cc7215c))
+* release(0.4.6): release new version ([e7210b3](https://github.com/Urigo/mongo-rxjs-observable/commit/e7210b3))
+* tests(version): updated meteor version for tests project ([a041b6d](https://github.com/Urigo/mongo-rxjs-observable/commit/a041b6d))
 * removed old tslint config ([e6530b2](https://github.com/Urigo/mongo-rxjs-observable/commit/e6530b2))
 * Replace 'meteor-typings' with '@types/meteor' ([b0d35e1](https://github.com/Urigo/mongo-rxjs-observable/commit/b0d35e1))
 * Update documentation for MeteorObservable ([c7816ba](https://github.com/Urigo/mongo-rxjs-observable/commit/c7816ba))
