@@ -1,4 +1,4 @@
-/// <reference types="@types/meteor" />
+/// <reference types="meteor" />
 import { Observable } from 'rxjs';
 export declare class ObservableCursor<T> extends Observable<T[]> {
     private _zone;
@@ -57,14 +57,14 @@ export declare class ObservableCursor<T> extends Observable<T[]> {
      * @param {Mongo.ObserveCallbacks} callbacks - The callbacks object.
      * @return {Meteor.LiveQueryHandle} The array with the matching documents.
      */
-    observe(callbacks: Mongo.ObserveCallbacks): Meteor.LiveQueryHandle;
+    observe(callbacks: Object): Meteor.LiveQueryHandle;
     /**
      * Watch a query. Receive callbacks as the result set changes.
      * Only the differences between the old and new documents are passed to the callbacks.
      * @param {Mongo.ObserveChangesCallbacks} callbacks - The callbacks object.
      * @return {Meteor.LiveQueryHandle} The array with the matching documents.
      */
-    observeChanges(callbacks: Mongo.ObserveChangesCallbacks): Meteor.LiveQueryHandle;
+    observeChanges(callbacks: Object): Meteor.LiveQueryHandle;
     _runComplete(): void;
     _runNext(data: Array<T>): void;
     _addedAt(doc: any, at: any, before: any): void;

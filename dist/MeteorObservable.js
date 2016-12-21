@@ -14,7 +14,7 @@ function throwInvalidCallback(method) {
  * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
  * and [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe).
  */
-export var MeteorObservable = (function () {
+var MeteorObservable = (function () {
     function MeteorObservable() {
     }
     /**
@@ -209,4 +209,5 @@ export var MeteorObservable = (function () {
     };
     return MeteorObservable;
 }());
+export { MeteorObservable };
 //# sourceMappingURL=MeteorObservable.js.map

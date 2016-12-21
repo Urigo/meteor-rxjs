@@ -21,8 +21,9 @@ var ZoneOperator = (function () {
 var ZoneSubscriber = (function (_super) {
     __extends(ZoneSubscriber, _super);
     function ZoneSubscriber(destination, zone) {
-        _super.call(this, destination);
-        this.zone = zone;
+        var _this = _super.call(this, destination) || this;
+        _this.zone = zone;
+        return _this;
     }
     ZoneSubscriber.prototype._next = function (value) {
         var _this = this;
