@@ -18,6 +18,10 @@ var ObservableCursor = (function (_super) {
             if (_this._isDataInitinialized) {
                 observer.next(_this._data);
             }
+            else if (cursor.count() === 0) {
+                _this._isDataInitinialized = true;
+                observer.next(_this._data);
+            }
             _this._observers.push(observer);
             if (!_this._hCursor) {
                 _this._hCursor = _this._observeCursor(cursor);
