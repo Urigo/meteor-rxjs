@@ -1,6 +1,6 @@
-import {Observable, Subscriber} from 'rxjs';
-import {ObservableCursor} from './ObservableCursor';
-import {removeObserver} from './utils';
+import { Observable, Subscriber } from 'rxjs';
+import { ObservableCursor } from './ObservableCursor';
+import { removeObserver } from './utils';
 
 import Selector = Mongo.Selector;
 import ObjectID = Mongo.ObjectID;
@@ -22,7 +22,7 @@ export module MongoObservable {
     update?: (userId: string, doc: T, fieldNames: string[], modifier: any) => boolean;
     remove?: (userId: string, doc: T) => boolean;
     fetch ?: string[];
-    transform ? : Function;
+    transform ?: Function;
   }
 
   /**
@@ -173,10 +173,9 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-update|update on Meteor documentation}
      */
-    update(
-      selector: Selector | ObjectID | string,
-      modifier: Modifier,
-      options?: { multi?: boolean; upsert?: boolean; }): Observable<number> {
+    update(selector: Selector | ObjectID | string,
+           modifier: Modifier,
+           options?: { multi?: boolean; upsert?: boolean; }): Observable<number> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 
@@ -204,10 +203,9 @@ export module MongoObservable {
      *
      * @see {@link https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert|upsert on Meteor documentation}
      */
-    upsert(
-      selector: Selector | ObjectID | string,
-      modifier: Modifier,
-      options?: { multi?: boolean; }): Observable<number> {
+    upsert(selector: Selector | ObjectID | string,
+           modifier: Modifier,
+           options?: { multi?: boolean; }): Observable<number> {
       let observers: Subscriber<number>[] = [];
       let obs = this._createObservable<number>(observers);
 

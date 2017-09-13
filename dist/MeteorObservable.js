@@ -2,7 +2,7 @@
 import { Observable } from 'rxjs';
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 function throwInvalidCallback(method) {
-    throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function, \n     please remove it and use \".subscribe\" of the Observable!");
+    throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function,\n     please remove it and use \".subscribe\" of the Observable!");
 }
 /**
  * This is a class with static methods that wrap Meteor's API and return RxJS
@@ -14,7 +14,7 @@ function throwInvalidCallback(method) {
  * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
  * and [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe).
  */
-var MeteorObservable = (function () {
+var MeteorObservable = /** @class */ (function () {
     function MeteorObservable() {
     }
     /**

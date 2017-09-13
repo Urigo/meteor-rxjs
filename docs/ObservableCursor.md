@@ -2,7 +2,7 @@
 
 ## ObservableCursor ⇐ <code>Observable</code>
 **Kind**: global class  
-**Extends:** <code>Observable</code>  
+**Extends**: <code>Observable</code>  
 
 * [ObservableCursor](#ObservableCursor) ⇐ <code>Observable</code>
     * [new ObservableCursor(cursor)](#new_ObservableCursor_new)
@@ -15,7 +15,7 @@
         * [.observe(callbacks)](#ObservableCursor+observe) ⇒ <code>Meteor.LiveQueryHandle</code>
         * [.observeChanges(callbacks)](#ObservableCursor+observeChanges) ⇒ <code>Meteor.LiveQueryHandle</code>
     * _static_
-        * [.create(cursor)](#ObservableCursor.create) ⇒ <code>[ObservableCursor](#ObservableCursor)</code>
+        * [.create(cursor)](#ObservableCursor.create) ⇒ [<code>ObservableCursor</code>](#ObservableCursor)
 
 <a name="new_ObservableCursor_new"></a>
 
@@ -30,7 +30,7 @@
 ### observableCursor.cursor ⇒ <code>Mongo.Cursor.&lt;T&gt;</code>
 Returns the actual Mongo.Cursor that wrapped by current ObservableCursor instance.
 
-**Kind**: instance property of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance property of [<code>ObservableCursor</code>](#ObservableCursor)  
 **Returns**: <code>Mongo.Cursor.&lt;T&gt;</code> - The actual MongoDB Cursor.  
 <a name="ObservableCursor+collectionCount"></a>
 
@@ -39,7 +39,7 @@ A wrapper for Mongo.Cursor.count() method - returns an Observable of number, whi
 triggers each time there is a change in the collection, and exposes the number of
 objects in the collection.
 
-**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance method of [<code>ObservableCursor</code>](#ObservableCursor)  
 **Returns**: <code>Observable</code> - Observable which trigger the callback when the
 count of the object changes.  
 <a name="ObservableCursor+stop"></a>
@@ -47,27 +47,27 @@ count of the object changes.
 ### observableCursor.stop()
 Stops the observation on the cursor.
 
-**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance method of [<code>ObservableCursor</code>](#ObservableCursor)  
 <a name="ObservableCursor+dispose"></a>
 
 ### observableCursor.dispose()
 Clears the Observable definition.
 Use this method only when the Observable is still cold, and there are no active subscriptions yet.
 
-**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance method of [<code>ObservableCursor</code>](#ObservableCursor)  
 <a name="ObservableCursor+fetch"></a>
 
 ### observableCursor.fetch() ⇒ <code>Array.&lt;T&gt;</code>
 Return all matching documents as an Array.
 
-**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance method of [<code>ObservableCursor</code>](#ObservableCursor)  
 **Returns**: <code>Array.&lt;T&gt;</code> - The array with the matching documents.  
 <a name="ObservableCursor+observe"></a>
 
 ### observableCursor.observe(callbacks) ⇒ <code>Meteor.LiveQueryHandle</code>
 Watch a query. Receive callbacks as the result set changes.
 
-**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance method of [<code>ObservableCursor</code>](#ObservableCursor)  
 **Returns**: <code>Meteor.LiveQueryHandle</code> - The array with the matching documents.  
 
 | Param | Type | Description |
@@ -80,7 +80,7 @@ Watch a query. Receive callbacks as the result set changes.
 Watch a query. Receive callbacks as the result set changes.
 Only the differences between the old and new documents are passed to the callbacks.
 
-**Kind**: instance method of <code>[ObservableCursor](#ObservableCursor)</code>  
+**Kind**: instance method of [<code>ObservableCursor</code>](#ObservableCursor)  
 **Returns**: <code>Meteor.LiveQueryHandle</code> - The array with the matching documents.  
 
 | Param | Type | Description |
@@ -89,13 +89,13 @@ Only the differences between the old and new documents are passed to the callbac
 
 <a name="ObservableCursor.create"></a>
 
-### ObservableCursor.create(cursor) ⇒ <code>[ObservableCursor](#ObservableCursor)</code>
+### ObservableCursor.create(cursor) ⇒ [<code>ObservableCursor</code>](#ObservableCursor)
 Static method which creates an ObservableCursor from Mongo.Cursor.
  Use this to create an ObservableCursor object from an existing Mongo.Cursor.
  Prefer to create an Cursors from the ObservableCollection instance instead.
 
-**Kind**: static method of <code>[ObservableCursor](#ObservableCursor)</code>  
-**Returns**: <code>[ObservableCursor](#ObservableCursor)</code> - Wrapped Cursor.  
+**Kind**: static method of [<code>ObservableCursor</code>](#ObservableCursor)  
+**Returns**: [<code>ObservableCursor</code>](#ObservableCursor) - Wrapped Cursor.  
 
 | Param | Type | Description |
 | --- | --- | --- |

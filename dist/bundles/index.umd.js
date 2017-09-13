@@ -1,9 +1,10 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
-    (factory((global.meteor = global.meteor || {}, global.meteor.rxjs = global.meteor.rxjs || {}),global.rxjs));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs));
 }(this, (function (exports,rxjs) { 'use strict';
 
+'use strict';
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
 function isMeteorCallbacks(callbacks) {
     return _.isFunction(callbacks) || isCallbacksObject(callbacks);
@@ -14,7 +15,6 @@ function isCallbacksObject(callbacks) {
         return _.isFunction(callbacks[event]);
     });
 }
-
 var g = typeof global === 'object' ? global :
     typeof window === 'object' ? window :
         typeof self === 'object' ? self : undefined;
@@ -56,12 +56,18 @@ function removeObserver(observers, observer, onEmpty) {
 }
 var gZone = g.Zone ? g.Zone.current : fakeZone;
 
-var __extends = (undefined && undefined.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var ObservableCursor = (function (_super) {
+'use strict';
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var ObservableCursor = /** @class */ (function (_super) {
     __extends(ObservableCursor, _super);
     /**
      * @constructor
@@ -194,18 +200,15 @@ var ObservableCursor = (function (_super) {
         this._data[at] = doc;
         this._handleChange();
     };
-    
     ObservableCursor.prototype._removedAt = function (doc, at) {
         this._data.splice(at, 1);
         this._handleChange();
     };
-    
     ObservableCursor.prototype._movedTo = function (doc, fromIndex, toIndex) {
         this._data.splice(fromIndex, 1);
         this._data.splice(toIndex, 0, doc);
         this._handleChange();
     };
-    
     ObservableCursor.prototype._handleChange = function () {
         var _this = this;
         this._isDataInitinialized = true;
@@ -213,7 +216,6 @@ var ObservableCursor = (function (_super) {
             _this._runNext(_this._data);
         });
     };
-    
     ObservableCursor.prototype._observeCursor = function (cursor) {
         var _this = this;
         return gZone.run(function () { return cursor.observe({
@@ -247,7 +249,7 @@ var ObservableCursor = (function (_super) {
      *
      * T is a generic type - should be used with the type of the objects inside the collection.
      */
-    var Collection = (function () {
+    var Collection = /** @class */ (function () {
         /**
          *  Creates a new Mongo.Collection instance wrapped with Observable features.
          *  @param {String | Mongo.Collection} nameOrExisting - The name of the collection. If null, creates an
@@ -474,8 +476,9 @@ var ObservableCursor = (function (_super) {
  * @property {Boolean} upsert - True to use upsert logic.
  */
 
+'use strict';
 function throwInvalidCallback(method) {
-    throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function, \n     please remove it and use \".subscribe\" of the Observable!");
+    throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function,\n     please remove it and use \".subscribe\" of the Observable!");
 }
 /**
  * This is a class with static methods that wrap Meteor's API and return RxJS
@@ -487,7 +490,7 @@ function throwInvalidCallback(method) {
  * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
  * and [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe).
  */
-var MeteorObservable = (function () {
+var MeteorObservable = /** @class */ (function () {
     function MeteorObservable() {
     }
     /**
@@ -683,15 +686,21 @@ var MeteorObservable = (function () {
     return MeteorObservable;
 }());
 
-var __extends$1 = (undefined && undefined.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-function zone(zone) {
+'use strict';
+var __extends$1 = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+function zoneOperator(zone) {
     return this.lift(new ZoneOperator(zone || getZone()));
 }
-var ZoneOperator = (function () {
+var ZoneOperator = /** @class */ (function () {
     function ZoneOperator(zone) {
         this.zone = zone;
     }
@@ -700,7 +709,7 @@ var ZoneOperator = (function () {
     };
     return ZoneOperator;
 }());
-var ZoneSubscriber = (function (_super) {
+var ZoneSubscriber = /** @class */ (function (_super) {
     __extends$1(ZoneSubscriber, _super);
     function ZoneSubscriber(destination, zone) {
         var _this = _super.call(this, destination) || this;
@@ -727,11 +736,11 @@ var ZoneSubscriber = (function (_super) {
     };
     return ZoneSubscriber;
 }(rxjs.Subscriber));
-rxjs.Observable.prototype.zone = zone;
+rxjs.Observable.prototype.zone = zoneOperator;
 
 exports.MeteorObservable = MeteorObservable;
 exports.ObservableCursor = ObservableCursor;
-exports.zone = zone;
+exports.zoneOperator = zoneOperator;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -1,12 +1,17 @@
 'use strict';
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 import { Observable, Subject } from 'rxjs';
 import { gZone, forkZone, removeObserver } from './utils';
-var ObservableCursor = (function (_super) {
+var ObservableCursor = /** @class */ (function (_super) {
     __extends(ObservableCursor, _super);
     /**
      * @constructor
@@ -139,18 +144,15 @@ var ObservableCursor = (function (_super) {
         this._data[at] = doc;
         this._handleChange();
     };
-    ;
     ObservableCursor.prototype._removedAt = function (doc, at) {
         this._data.splice(at, 1);
         this._handleChange();
     };
-    ;
     ObservableCursor.prototype._movedTo = function (doc, fromIndex, toIndex) {
         this._data.splice(fromIndex, 1);
         this._data.splice(toIndex, 0, doc);
         this._handleChange();
     };
-    ;
     ObservableCursor.prototype._handleChange = function () {
         var _this = this;
         this._isDataInitinialized = true;
@@ -158,7 +160,6 @@ var ObservableCursor = (function (_super) {
             _this._runNext(_this._data);
         });
     };
-    ;
     ObservableCursor.prototype._observeCursor = function (cursor) {
         var _this = this;
         return gZone.run(function () { return cursor.observe({

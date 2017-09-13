@@ -27,7 +27,7 @@ the same signature as
 without the callbacks:
    MeteorObservable.call(name, [...args])
 
-**Kind**: static method of <code>[MeteorObservable](#MeteorObservable)</code>  
+**Kind**: static method of [<code>MeteorObservable</code>](#MeteorObservable)  
 **Returns**: <code>Observable.&lt;T&gt;</code> - - RxJS Observable, which completes when the
  server returns a response.  
 
@@ -64,7 +64,7 @@ except without the callbacks again:
  You can use this method from any Angular2 element - such as Component,
  Pipe or Service.
 
-**Kind**: static method of <code>[MeteorObservable](#MeteorObservable)</code>  
+**Kind**: static method of [<code>MeteorObservable</code>](#MeteorObservable)  
 **Returns**: <code>Observable</code> - - RxJS Observable, which completes when the
  subscription is ready.  
 **See**: [Publications in Meteor documentation](http://docs.meteor.com/api/pubsub.html)  
@@ -127,7 +127,7 @@ data sources. This method has the same signature as
 only without the callback:
    MeteorObservable.autorun()
 
-**Kind**: static method of <code>[MeteorObservable](#MeteorObservable)</code>  
+**Kind**: static method of [<code>MeteorObservable</code>](#MeteorObservable)  
 **Returns**: <code>Observable.&lt;T&gt;</code> - - RxJS Observable, which trigger the subscription callback
  each time that Meteor Tracker detects a change.  
 **Example** *(Example using Angular2 Component)*  
