@@ -1,3 +1,4 @@
+import { Mongo } from 'meteor/mongo';
 import { Observable } from 'rxjs';
 import { ObservableCursor } from './ObservableCursor';
 import Selector = Mongo.Selector;
