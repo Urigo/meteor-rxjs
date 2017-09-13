@@ -22,7 +22,7 @@
     "build-only": "tsc || echo not ok",
     "pretest": "cd tests && rm -rf node_modules && npm install",
     "test-ci": "npm run pretest && cd tests && meteor test --once --driver-package dispatch:mocha-phantomjs",
-    "test": "cd tests && meteor test --driver-package dispatch:mocha-phantomjs",
+    "test": "cd tests && meteor test --driver-package practicalmeteor:mocha",
     "lint": "tslint src/**/*.ts",
     "bundle": "rollup -i ./dist/index.js -o ./dist/bundles/index.umd.js -n meteor.rxjs -c rollup.config.js"
   },

@@ -34,18 +34,20 @@ export class ObservableCursor<T> extends Observable<T[]> {
    */
   constructor(cursor: Mongo.Cursor<T>) {
     super((observer: Subscriber<T[]>) => {
-      if (this._isDataInitinialized) {
-        observer.next(this._data);
-      } else if (cursor.count() === 0) {
-        this._isDataInitinialized = true;
-        observer.next(this._data);
-      }
-
       this._observers.push(observer);
 
       if (!this._hCursor) {
         this._hCursor = this._observeCursor(cursor);
       }
+
+      setTimeout(() => {
+        if (this._isDataInitinialized) {
+          observer.next(this._data);
+        } else if (cursor.count() === 0) {
+          this._isDataInitinialized = true;
+          observer.next(this._data);
+        }
+      }, 0);
 
       return () => {
         removeObserver(this._observers,

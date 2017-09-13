@@ -20,17 +20,19 @@ var ObservableCursor = /** @class */ (function (_super) {
      */
     function ObservableCursor(cursor) {
         var _this = _super.call(this, function (observer) {
-            if (_this._isDataInitinialized) {
-                observer.next(_this._data);
-            }
-            else if (cursor.count() === 0) {
-                _this._isDataInitinialized = true;
-                observer.next(_this._data);
-            }
             _this._observers.push(observer);
             if (!_this._hCursor) {
                 _this._hCursor = _this._observeCursor(cursor);
             }
+            setTimeout(function () {
+                if (_this._isDataInitinialized) {
+                    observer.next(_this._data);
+                }
+                else if (cursor.count() === 0) {
+                    _this._isDataInitinialized = true;
+                    observer.next(_this._data);
+                }
+            }, 0);
             return function () {
                 removeObserver(_this._observers, observer, function () { return _this.stop(); });
             };

@@ -94,6 +94,7 @@ describe('ObservableCursor', function () {
       count++;
 
       // 4 because: insert, insert, update, *move*
+      console.log(count);
       if (count === 4) {
         let firstItem = docs[0];
         expect(firstItem.name).to.equal('AAAA');
@@ -222,8 +223,9 @@ describe('ObservableCursor', function () {
     wrappedCollection.insert({test: 2});
     wrappedCollection.insert({test: 3});
     let secondSubscriptionHandler = observable.subscribe(spyCb2);
+    wrappedCollection.insert({test: 4});
 
-    expect(spyCb1.callCount).to.equal(3);
+    expect(spyCb1.callCount).to.equal(4);
     expect(spyCb2.callCount).to.equal(1);
 
     firstSubscriptionHandler.unsubscribe();
