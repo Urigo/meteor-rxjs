@@ -1,5 +1,5 @@
-<a name="0.5.0"></a>
-## 0.5.0 (2017-09-13)
+<a name="0.4.8"></a>
+## 0.4.8 (2017-09-13)
 * updated all dependencies
 * updated tests project to latest Meteor version
 * Fix: return empty array when find yield no results [#103](https://github.com/Urigo/meteor-rxjs/pull/103)
