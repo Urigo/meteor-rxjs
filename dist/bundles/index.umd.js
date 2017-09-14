@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('meteor/mongo'), require('rxjs')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'meteor/mongo', 'rxjs'], factory) :
-	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.mongo,global.rxjs));
-}(this, (function (exports,mongo,rxjs) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs));
+}(this, (function (exports,rxjs) { 'use strict';
 
 'use strict';
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
@@ -261,11 +261,11 @@ var ObservableCursor = /** @class */ (function (_super) {
          *  @constructor
          */
         function Collection(nameOrExisting, options) {
-            if (nameOrExisting instanceof mongo.Mongo.Collection) {
+            if (nameOrExisting instanceof Mongo.Collection) {
                 this._collection = nameOrExisting;
             }
             else {
-                this._collection = new mongo.Mongo.Collection(nameOrExisting, options);
+                this._collection = new Mongo.Collection(nameOrExisting, options);
             }
         }
         Object.defineProperty(Collection.prototype, "collection", {
