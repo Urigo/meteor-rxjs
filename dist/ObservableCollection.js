@@ -23,7 +23,7 @@ export var MongoObservable;
      *
      * T is a generic type - should be used with the type of the objects inside the collection.
      */
-    var Collection = (function () {
+    var Collection = /** @class */ (function () {
         /**
          *  Creates a new Mongo.Collection instance wrapped with Observable features.
          *  @param {String | Mongo.Collection} nameOrExisting - The name of the collection. If null, creates an

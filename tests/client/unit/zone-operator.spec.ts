@@ -40,6 +40,7 @@ describe('ZoneOperator', () => {
       let zone = Zone.current.fork({ name: 'ng'});
       zone.run(() => {
         let subHandler = MeteorObservable.autorun().subscribe(() => {
+          console.log(subHandler);
           observable.find({}).zone().subscribe(() => {
             expect(Zone.current).to.equal(zone);
             subHandler.unsubscribe();

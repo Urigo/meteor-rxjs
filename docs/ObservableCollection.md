@@ -26,7 +26,7 @@ T is a generic type - should be used with the type of the objects inside the col
         * [.findOne(selector, options)](#Collection+findOne) ⇒ <code>any</code>
     * _inner_
         * [~MongoQueryOptions](#Collection..MongoQueryOptions) : <code>Object</code>
-        * [~MongoQuerySelector](#Collection..MongoQuerySelector) : <code>Mongo.Selector</code> &#124; <code>Mongo.ObjectID</code> &#124; <code>string</code>
+        * [~MongoQuerySelector](#Collection..MongoQuerySelector) : <code>Mongo.Selector</code> \| <code>Mongo.ObjectID</code> \| <code>string</code>
         * [~MongoUpsertOptions](#Collection..MongoUpsertOptions) : <code>Object</code>
         * [~MongoUpdateOptions](#Collection..MongoUpdateOptions) : <code>Object</code>
 
@@ -38,7 +38,7 @@ Creates a new Mongo.Collection instance wrapped with Observable features.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| nameOrExisting | <code>String</code> &#124; <code>Mongo.Collection</code> | The name of the collection. If null, creates an  unmanaged (unsynchronized) local collection. If provided an instance of existing collection, will  create a wrapper for the existing Mongo.Collection. |
+| nameOrExisting | <code>String</code> \| <code>Mongo.Collection</code> | The name of the collection. If null, creates an  unmanaged (unsynchronized) local collection. If provided an instance of existing collection, will  create a wrapper for the existing Mongo.Collection. |
 | options | <code>ConstructorOptions</code> | Creation options. |
 
 <a name="Collection+collection"></a>
@@ -46,27 +46,27 @@ Creates a new Mongo.Collection instance wrapped with Observable features.
 ### collection.collection ⇒ <code>Mongo.Collection.&lt;T&gt;</code>
 Returns the Mongo.Collection object that wrapped with the MongoObservable.Collection.
 
-**Kind**: instance property of <code>[Collection](#Collection)</code>  
+**Kind**: instance property of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Mongo.Collection.&lt;T&gt;</code> - The Collection instance  
 <a name="Collection+allow"></a>
 
 ### collection.allow() ⇒ <code>Boolean</code>
 Allow users to write directly to this collection from client code, subject to limitations you define.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 <a name="Collection+deny"></a>
 
 ### collection.deny() ⇒ <code>Boolean</code>
 Override allow rules.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 <a name="Collection+rawCollection"></a>
 
 ### collection.rawCollection() ⇒ <code>Mongo.Collection</code>
 Returns the Collection object corresponding to this collection from the npm
  mongodb driver module which is wrapped by Mongo.Collection.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Mongo.Collection</code> - The Collection instance  
 **See**: [rawCollection on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-rawCollection)  
 <a name="Collection+rawDatabase"></a>
@@ -75,7 +75,7 @@ Returns the Collection object corresponding to this collection from the npm
 Returns the Db object corresponding to this collection's database connection from the
  npm mongodb driver module which is wrapped by Mongo.Collection.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Mongo.Db</code> - The Db instance  
 **See**: [rawDatabase on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-rawDatabase)  
 <a name="Collection+insert"></a>
@@ -83,7 +83,7 @@ Returns the Db object corresponding to this collection's database connection fro
 ### collection.insert(doc) ⇒ <code>Observable.&lt;string&gt;</code>
 Insert a document in the collection.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Observable.&lt;string&gt;</code> - Observable which completes with the inserted ObjectId  
 **See**: [insert on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-insert)  
 
@@ -96,26 +96,26 @@ Insert a document in the collection.
 ### collection.remove(selector) ⇒ <code>Observable.&lt;Number&gt;</code>
 Remove documents from the collection.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Observable.&lt;Number&gt;</code> - Observable which completes with the number of affected rows  
 **See**: [remove on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-remove)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | Specifies which documents to modify |
+| selector | [<code>MongoQuerySelector</code>](#Collection..MongoQuerySelector) | Specifies which documents to modify |
 
 <a name="Collection+update"></a>
 
 ### collection.update(selector, modifier, options) ⇒ <code>Observable.&lt;Number&gt;</code>
 Modify one or more documents in the collection.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Observable.&lt;Number&gt;</code> - Observable which completes with the number of affected rows  
 **See**: [update on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-update)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | Specifies which documents to modify |
+| selector | [<code>MongoQuerySelector</code>](#Collection..MongoQuerySelector) | Specifies which documents to modify |
 | modifier | <code>Modifier</code> | Specifies how to modify the documents |
 | options | <code>MongoUpdateOptions</code> | Update options  first argument and, if no error, the number of affected documents as the second |
 
@@ -124,14 +124,14 @@ Modify one or more documents in the collection.
 ### collection.upsert(selector, modifier, options) ⇒ <code>Observable.&lt;{numberAffected, insertedId}&gt;</code>
 Finds the first document that matches the selector, as ordered by sort and skip options.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>Observable.&lt;{numberAffected, insertedId}&gt;</code> - Observable which completes with an
  Object that contain the keys numberAffected and insertedId.  
 **See**: [upsert on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-upsert)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | Specifies which documents to modify |
+| selector | [<code>MongoQuerySelector</code>](#Collection..MongoQuerySelector) | Specifies which documents to modify |
 | modifier | <code>Modifier</code> | Specifies how to modify the documents |
 | options | <code>MongoUpsertOptions</code> | Upsert options  first argument and, if no error, the number of affected documents as the second. |
 
@@ -140,14 +140,14 @@ Finds the first document that matches the selector, as ordered by sort and skip 
 ### collection.find(selector, options) ⇒ <code>ObservableCursor.&lt;T&gt;</code>
 Method has the same notation as Mongo.Collection.find, only returns Observable.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>ObservableCursor.&lt;T&gt;</code> - RxJS Observable wrapped with Meteor features.  
 **See**: [find on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-find)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | A query describing the documents to find |
-| options | <code>[MongoQueryOptions](#Collection..MongoQueryOptions)</code> | Query options, such as sort, limit, etc. |
+| selector | [<code>MongoQuerySelector</code>](#Collection..MongoQuerySelector) | A query describing the documents to find |
+| options | [<code>MongoQueryOptions</code>](#Collection..MongoQueryOptions) | Query options, such as sort, limit, etc. |
 
 **Example** *(Using Angular2 Component)*  
 ```js
@@ -166,21 +166,21 @@ Method has the same notation as Mongo.Collection.find, only returns Observable.
 ### collection.findOne(selector, options) ⇒ <code>any</code>
 Finds the first document that matches the selector, as ordered by sort and skip options.
 
-**Kind**: instance method of <code>[Collection](#Collection)</code>  
+**Kind**: instance method of [<code>Collection</code>](#Collection)  
 **Returns**: <code>any</code> - The first object, or `undefined` in case of non-existing object.  
 **See**: [findOne on Meteor documentation](https://docs.meteor.com/api/collections.html#Mongo-Collection-findOne)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| selector | <code>[MongoQuerySelector](#Collection..MongoQuerySelector)</code> | A query describing the documents to find |
-| options | <code>[MongoQueryOptions](#Collection..MongoQueryOptions)</code> | Query options, such as sort, limit, etc. |
+| selector | [<code>MongoQuerySelector</code>](#Collection..MongoQuerySelector) | A query describing the documents to find |
+| options | [<code>MongoQueryOptions</code>](#Collection..MongoQueryOptions) | Query options, such as sort, limit, etc. |
 
 <a name="Collection..MongoQueryOptions"></a>
 
 ### Collection~MongoQueryOptions : <code>Object</code>
 An options object for MongoDB queries.
 
-**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Kind**: inner typedef of [<code>Collection</code>](#Collection)  
 **Properties**
 
 | Name | Type | Description |
@@ -193,16 +193,16 @@ An options object for MongoDB queries.
 
 <a name="Collection..MongoQuerySelector"></a>
 
-### Collection~MongoQuerySelector : <code>Mongo.Selector</code> &#124; <code>Mongo.ObjectID</code> &#124; <code>string</code>
+### Collection~MongoQuerySelector : <code>Mongo.Selector</code> \| <code>Mongo.ObjectID</code> \| <code>string</code>
 A MongoDB query selector representation.
 
-**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Kind**: inner typedef of [<code>Collection</code>](#Collection)  
 <a name="Collection..MongoUpsertOptions"></a>
 
 ### Collection~MongoUpsertOptions : <code>Object</code>
 A MongoDB query options for upsert action
 
-**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Kind**: inner typedef of [<code>Collection</code>](#Collection)  
 **Properties**
 
 | Name | Type | Description |
@@ -214,7 +214,7 @@ A MongoDB query options for upsert action
 ### Collection~MongoUpdateOptions : <code>Object</code>
 A MongoDB query options for update action
 
-**Kind**: inner typedef of <code>[Collection](#Collection)</code>  
+**Kind**: inner typedef of [<code>Collection</code>](#Collection)  
 **Properties**
 
 | Name | Type | Description |

@@ -1,34 +1,34 @@
 'use strict';
 
-import {Observable, Subscriber} from 'rxjs';
-import {isMeteorCallbacks, forkZone, removeObserver} from './utils';
+import { Observable, Subscriber } from 'rxjs';
+import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 
 let liveSubscriptions = [];
 
 function throwInvalidCallback(method: string) {
   throw new Error(
     `Invalid ${method} arguments:
-     your last param can't be a callback function, 
+     your last param can't be a callback function,
      please remove it and use ".subscribe" of the Observable!`);
 }
 
 /**
- * This is a class with static methods that wrap Meteor's API and return RxJS 
+ * This is a class with static methods that wrap Meteor's API and return RxJS
  * Observables. The methods' signatures are the same as Meteor's, with the ]
- * exception that the callbacks are handled by Meteor-rxjs. Instead of 
- * providing callbacks, you need to subscribe to the observables that are 
- * returned. The methods that are wrapped in MeteorObservable are 
+ * exception that the callbacks are handled by Meteor-rxjs. Instead of
+ * providing callbacks, you need to subscribe to the observables that are
+ * returned. The methods that are wrapped in MeteorObservable are
  * [Meteor.call](https://docs.meteor.com/api/methods.html#Meteor-call),
- * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun) 
+ * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun)
  * and [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe).
  */
 export class MeteorObservable {
 
   /**
-   * Invokes a [Meteor Method](https://docs.meteor.com/api/methods.html) 
-   * defined on the server, passing any number of arguments. This method has 
-   * the same signature as 
-   * [Meteor.call](https://docs.meteor.com/api/methods.html#Meteor-call), only 
+   * Invokes a [Meteor Method](https://docs.meteor.com/api/methods.html)
+   * defined on the server, passing any number of arguments. This method has
+   * the same signature as
+   * [Meteor.call](https://docs.meteor.com/api/methods.html#Meteor-call), only
    * without the callbacks:
    *    MeteorObservable.call(name, [...args])
    *
@@ -36,7 +36,7 @@ export class MeteorObservable {
    *  @param {string} name - Name of the method in the Meteor server
    *  @param {any} args - Parameters that will be forwarded to the method.
    *   after the func call to initiate change detection.
-   *  @returns {Observable<T>} - RxJS Observable, which completes when the 
+   *  @returns {Observable<T>} - RxJS Observable, which completes when the
    *  server returns a response.
    *
    *  @example <caption>Example using Angular2 Component</caption>
@@ -77,19 +77,19 @@ export class MeteorObservable {
   }
 
   /**
-   * When you subscribe to a collection, it tells the server to send records to 
-   * the client. This method has the same signature as 
-   * [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe), 
+   * When you subscribe to a collection, it tells the server to send records to
+   * the client. This method has the same signature as
+   * [Meteor.subscribe](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe),
    * except without the callbacks again:
    *    subscribe(name, [...args])
    *
-   *  You can use this method from any Angular2 element - such as Component, 
+   *  You can use this method from any Angular2 element - such as Component,
    *  Pipe or Service.
    *
    *  @param {string} name - Name of the publication in the Meteor server
    *  @param {any} args - Parameters that will be forwarded to the publication.
    *   after the func call to initiate change detection.
-   *  @returns {Observable} - RxJS Observable, which completes when the 
+   *  @returns {Observable} - RxJS Observable, which completes when the
    *  subscription is ready.
    *
    *  @example <caption>Example using Angular2 Service</caption>
@@ -143,17 +143,17 @@ export class MeteorObservable {
     let observers = [];
     let subscribe = () => {
       return Meteor.subscribe(name, ...args.concat([{
-          onError: (error: Meteor.Error) => {
-            zone.run(() => {
-              observers.forEach(observer => observer.error(error));
-            });
-          },
-          onReady: () => {
-            zone.run(() => {
-              observers.forEach(observer => observer.next());
-            });
-          }
+        onError: (error: Meteor.Error) => {
+          zone.run(() => {
+            observers.forEach(observer => observer.error(error));
+          });
+        },
+        onReady: () => {
+          zone.run(() => {
+            observers.forEach(observer => observer.next());
+          });
         }
+      }
       ]));
     };
 
@@ -190,9 +190,9 @@ export class MeteorObservable {
   }
 
   /**
-   * Allows you to run a function every time there is a change is a reactive 
-   * data sources. This method has the same signature as 
-   * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun), 
+   * Allows you to run a function every time there is a change is a reactive
+   * data sources. This method has the same signature as
+   * [Meteor.autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun),
    * only without the callback:
    *    MeteorObservable.autorun()
    *

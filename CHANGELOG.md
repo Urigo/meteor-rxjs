@@ -1,3 +1,10 @@
+<a name="0.4.8"></a>
+## 0.4.8 (2017-09-13)
+* updated all dependencies
+* updated tests project to latest Meteor version
+* Fix: return empty array when find yield no results [#103](https://github.com/Urigo/meteor-rxjs/pull/103)
+* Fix multiple MeteorObservable.subscribe calls with identical arguments [#76](https://github.com/Urigo/meteor-rxjs/pull/76)
+
 <a name="0.4.7"></a>
 ## 0.4.7 (2016-12-21)
 

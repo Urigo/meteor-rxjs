@@ -1,17 +1,18 @@
 'use strict';
 
-import {Observable, Operator, Subscriber} from 'rxjs';
+import { Observable, Operator, Subscriber } from 'rxjs';
 
-import {TeardownLogic} from 'rxjs/Subscription';
+import { TeardownLogic } from 'rxjs/Subscription';
 
-import {getZone} from './utils';
+import { getZone } from './utils';
 
-export function zone<T>(zone?: Zone): Observable<T> {
+export function zoneOperator<T>(zone?: Zone): Observable<T> {
   return this.lift(new ZoneOperator(zone || getZone()));
 }
 
 class ZoneOperator<T> implements Operator<T, T> {
-  constructor(private zone: Zone) {}
+  constructor(private zone: Zone) {
+  }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source._subscribe(new ZoneSubscriber(subscriber, this.zone));
@@ -47,7 +48,7 @@ export interface ZoneSignature<T> {
   (zone?: Zone): Observable<T>;
 }
 
-Observable.prototype.zone = zone;
+Observable.prototype.zone = zoneOperator;
 
 declare module 'rxjs/Observable' {
   interface Observable<T> {

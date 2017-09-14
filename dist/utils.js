@@ -9,7 +9,6 @@ export function isCallbacksObject(callbacks) {
         return _.isFunction(callbacks[event]);
     });
 }
-;
 export var g = typeof global === 'object' ? global :
     typeof window === 'object' ? window :
         typeof self === 'object' ? self : undefined;

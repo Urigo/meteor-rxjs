@@ -1,6 +1,6 @@
 'use strict';
 
-import {Subscriber} from 'rxjs';
+import { Subscriber } from 'rxjs';
 
 declare let _;
 
@@ -23,7 +23,7 @@ export function isCallbacksObject(callbacks: any): boolean {
   return callbacks && subscribeEvents.some((event) => {
     return _.isFunction(callbacks[event]);
   });
-};
+}
 
 declare const global;
 export const g =

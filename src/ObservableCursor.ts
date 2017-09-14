@@ -1,13 +1,13 @@
 'use strict';
 
-import {Observable, Subscriber, Subject} from 'rxjs';
-import {gZone, forkZone, removeObserver} from './utils';
+import { Observable, Subscriber, Subject } from 'rxjs';
+import { gZone, forkZone, removeObserver } from './utils';
 
 declare let _;
 
 export class ObservableCursor<T> extends Observable<T[]> {
   private _zone: Zone;
-  private _data: Array <T> = [];
+  private _data: Array<T> = [];
   private _cursor: Mongo.Cursor<T>;
   private _hCursor: Meteor.LiveQueryHandle;
   private _observers: Subscriber<T[]>[] = [];
@@ -34,18 +34,20 @@ export class ObservableCursor<T> extends Observable<T[]> {
    */
   constructor(cursor: Mongo.Cursor<T>) {
     super((observer: Subscriber<T[]>) => {
-      if (this._isDataInitinialized) {
-        observer.next(this._data);
-      } else if ( cursor.count() === 0 ) {
-        this._isDataInitinialized = true;
-        observer.next(this._data);
-      }
-
       this._observers.push(observer);
 
       if (!this._hCursor) {
         this._hCursor = this._observeCursor(cursor);
       }
+
+      Meteor.setTimeout(() => {
+        if (this._isDataInitinialized) {
+          observer.next(this._data);
+        } else if (cursor.count() === 0) {
+          this._isDataInitinialized = true;
+          observer.next(this._data);
+        }
+      }, 0);
 
       return () => {
         removeObserver(this._observers,
@@ -155,18 +157,18 @@ export class ObservableCursor<T> extends Observable<T[]> {
   _changedAt(doc, old, at) {
     this._data[at] = doc;
     this._handleChange();
-  };
+  }
 
   _removedAt(doc, at) {
     this._data.splice(at, 1);
     this._handleChange();
-  };
+  }
 
   _movedTo(doc, fromIndex, toIndex) {
     this._data.splice(fromIndex, 1);
     this._data.splice(toIndex, 0, doc);
     this._handleChange();
-  };
+  }
 
   _handleChange() {
     this._isDataInitinialized = true;
@@ -174,7 +176,7 @@ export class ObservableCursor<T> extends Observable<T[]> {
     this._zone.run(() => {
       this._runNext(this._data);
     });
-  };
+  }
 
   _observeCursor(cursor: Mongo.Cursor<T>) {
     return gZone.run(
