@@ -14,7 +14,7 @@
     "@types/chai": "3.5.2",
     "@types/mocha": "2.2.43",
     "chai": "3.5.0",
-    "chai-spies": "0.7.1"
+    "chai-spies": "1.0.0"
   },
   "dependencies": {
     "@angular/common": "2.1.2",
