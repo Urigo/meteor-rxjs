@@ -1,4 +1,3 @@
-'use strict';
 export var subscribeEvents = ['onReady', 'onError', 'onStop'];
 export function isMeteorCallbacks(callbacks) {
     return _.isFunction(callbacks) || isCallbacksObject(callbacks);

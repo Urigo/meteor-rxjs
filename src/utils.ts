@@ -1,5 +1,3 @@
-'use strict';
-
 import { Subscriber } from 'rxjs/Subscriber';
 
 declare let _;

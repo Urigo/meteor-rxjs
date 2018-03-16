@@ -4,7 +4,6 @@
 	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.mongo,global.Observable,global.Subject,global.meteor,global.tracker,global.Subscriber));
 }(this, (function (exports,mongo,Observable,Subject,meteor,tracker,Subscriber) { 'use strict';
 
-'use strict';
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
 function isMeteorCallbacks(callbacks) {
     return _.isFunction(callbacks) || isCallbacksObject(callbacks);
@@ -751,8 +750,6 @@ var ZoneSubscriber = /** @class */ (function (_super) {
     return ZoneSubscriber;
 }(Subscriber.Subscriber));
 Observable.Observable.prototype.zone = zoneOperator;
-
-/// <reference path="../node_modules/zone.js/dist/zone.js.d.ts" />
 
 exports.MeteorObservable = MeteorObservable;
 exports.ObservableCursor = ObservableCursor;
