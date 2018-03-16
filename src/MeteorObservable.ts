@@ -1,6 +1,9 @@
-'use strict';
+import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
 
-import { Observable, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
+
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 
 let liveSubscriptions = [];

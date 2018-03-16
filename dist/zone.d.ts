@@ -1,5 +1,5 @@
 /// <reference types="zone.js" />
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 export declare function zoneOperator<T>(zone?: Zone): Observable<T>;
 export interface ZoneSignature<T> {
     (zone?: Zone): Observable<T>;

@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'rxjs'], factory) :
-	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs));
-}(this, (function (exports,rxjs) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('meteor/mongo'), require('rxjs/Observable'), require('rxjs/Subject'), require('meteor/meteor'), require('meteor/tracker'), require('rxjs/Subscriber')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'meteor/mongo', 'rxjs/Observable', 'rxjs/Subject', 'meteor/meteor', 'meteor/tracker', 'rxjs/Subscriber'], factory) :
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.mongo,global.Observable,global.Subject,global.meteor,global.tracker,global.Subscriber));
+}(this, (function (exports,mongo,Observable,Subject,meteor,tracker,Subscriber) { 'use strict';
 
 'use strict';
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
@@ -56,7 +56,6 @@ function removeObserver(observers, observer, onEmpty) {
 }
 var gZone = g.Zone ? g.Zone.current : fakeZone;
 
-'use strict';
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -95,7 +94,7 @@ var ObservableCursor = /** @class */ (function (_super) {
         }) || this;
         _this._data = [];
         _this._observers = [];
-        _this._countObserver = new rxjs.Subject();
+        _this._countObserver = new Subject.Subject();
         _this._isDataInitinialized = false;
         _.extend(_this, _.omit(cursor, 'count', 'map'));
         _this._cursor = cursor;
@@ -228,7 +227,7 @@ var ObservableCursor = /** @class */ (function (_super) {
         }); });
     };
     return ObservableCursor;
-}(rxjs.Observable));
+}(Observable.Observable));
 
 (function (MongoObservable) {
     'use strict';
@@ -261,11 +260,11 @@ var ObservableCursor = /** @class */ (function (_super) {
          *  @constructor
          */
         function Collection(nameOrExisting, options) {
-            if (nameOrExisting instanceof Mongo.Collection) {
+            if (nameOrExisting instanceof mongo.Mongo.Collection) {
                 this._collection = nameOrExisting;
             }
             else {
-                this._collection = new Mongo.Collection(nameOrExisting, options);
+                this._collection = new mongo.Mongo.Collection(nameOrExisting, options);
             }
         }
         Object.defineProperty(Collection.prototype, "collection", {
@@ -441,7 +440,7 @@ var ObservableCursor = /** @class */ (function (_super) {
             return this._collection.findOne.apply(this._collection, arguments);
         };
         Collection.prototype._createObservable = function (observers) {
-            return rxjs.Observable.create(function (observer) {
+            return Observable.Observable.create(function (observer) {
                 observers.push(observer);
                 return function () {
                     removeObserver(observers, observer);
@@ -478,7 +477,7 @@ var ObservableCursor = /** @class */ (function (_super) {
  * @property {Boolean} upsert - True to use upsert logic.
  */
 
-'use strict';
+var liveSubscriptions = [];
 function throwInvalidCallback(method) {
     throw new Error("Invalid " + method + " arguments:\n     your last param can't be a callback function,\n     please remove it and use \".subscribe\" of the Observable!");
 }
@@ -535,8 +534,8 @@ var MeteorObservable = /** @class */ (function () {
             throwInvalidCallback('MeteorObservable.call');
         }
         var zone = forkZone();
-        return rxjs.Observable.create(function (observer) {
-            Meteor.call.apply(Meteor, [name].concat(args.concat([
+        return Observable.Observable.create(function (observer) {
+            meteor.Meteor.call.apply(meteor.Meteor, [name].concat(args.concat([
                 function (error, result) {
                     zone.run(function () {
                         error ? observer.error(error) :
@@ -615,7 +614,7 @@ var MeteorObservable = /** @class */ (function () {
         var zone = forkZone();
         var observers = [];
         var subscribe = function () {
-            return Meteor.subscribe.apply(Meteor, [name].concat(args.concat([{
+            return meteor.Meteor.subscribe.apply(meteor.Meteor, [name].concat(args.concat([{
                     onError: function (error) {
                         zone.run(function () {
                             observers.forEach(function (observer) { return observer.error(error); });
@@ -630,14 +629,28 @@ var MeteorObservable = /** @class */ (function () {
             ])));
         };
         var subHandler = null;
-        return rxjs.Observable.create(function (observer) {
+        return Observable.Observable.create(function (observer) {
             observers.push(observer);
             // Execute subscribe lazily.
             if (subHandler === null) {
                 subHandler = subscribe();
+                if (liveSubscriptions.find(function (sub) { return sub === subHandler.subscriptionId; })) {
+                    // subscription already exists, call observer.next() since Meteor won't.
+                    observer.next();
+                }
+                else {
+                    liveSubscriptions.push(subHandler.subscriptionId);
+                }
             }
             return function () {
-                removeObserver(observers, observer, function () { return subHandler.stop(); });
+                removeObserver(observers, observer, function () {
+                    // remove subscription from liveSubscriptions list
+                    var i = liveSubscriptions.findIndex(function (sub) { return sub === subHandler.subscriptionId; });
+                    if (i > -1) {
+                        liveSubscriptions.splice(i, 1);
+                    }
+                    subHandler.stop();
+                });
             };
         });
     };
@@ -667,14 +680,14 @@ var MeteorObservable = /** @class */ (function () {
         var zone = forkZone();
         var observers = [];
         var autorun = function () {
-            return Tracker.autorun(function (computation) {
+            return tracker.Tracker.autorun(function (computation) {
                 zone.run(function () {
                     observers.forEach(function (observer) { return observer.next(computation); });
                 });
             });
         };
         var handler = null;
-        return rxjs.Observable.create(function (observer) {
+        return Observable.Observable.create(function (observer) {
             observers.push(observer);
             // Execute autorun lazily.
             if (handler === null) {
@@ -688,7 +701,6 @@ var MeteorObservable = /** @class */ (function () {
     return MeteorObservable;
 }());
 
-'use strict';
 var __extends$1 = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -737,8 +749,10 @@ var ZoneSubscriber = /** @class */ (function (_super) {
         });
     };
     return ZoneSubscriber;
-}(rxjs.Subscriber));
-rxjs.Observable.prototype.zone = zoneOperator;
+}(Subscriber.Subscriber));
+Observable.Observable.prototype.zone = zoneOperator;
+
+/// <reference path="../node_modules/zone.js/dist/zone.js.d.ts" />
 
 exports.MeteorObservable = MeteorObservable;
 exports.ObservableCursor = ObservableCursor;

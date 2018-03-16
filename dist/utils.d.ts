@@ -1,4 +1,4 @@
-import { Subscriber } from 'rxjs';
+import { Subscriber } from 'rxjs/Subscriber';
 export declare type CallbacksObject = {
     onReady?: Function;
     onError?: Function;

@@ -1,4 +1,8 @@
-import { Observable, Subscriber } from 'rxjs';
+import { Mongo } from 'meteor/mongo';
+
+import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
+
 import { ObservableCursor } from './ObservableCursor';
 import { removeObserver } from './utils';
 
@@ -21,8 +25,8 @@ export module MongoObservable {
     insert?: (userId: string, doc: T) => boolean;
     update?: (userId: string, doc: T, fieldNames: string[], modifier: any) => boolean;
     remove?: (userId: string, doc: T) => boolean;
-    fetch ?: string[];
-    transform ?: Function;
+    fetch?: string[];
+    transform?: Function;
   }
 
   /**

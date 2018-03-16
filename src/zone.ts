@@ -1,6 +1,6 @@
-'use strict';
-
-import { Observable, Operator, Subscriber } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Operator } from 'rxjs/Operator';
+import { Subscriber } from 'rxjs/Subscriber';
 
 import { TeardownLogic } from 'rxjs/Subscription';
 
