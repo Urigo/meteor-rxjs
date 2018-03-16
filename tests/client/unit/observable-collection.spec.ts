@@ -1,7 +1,7 @@
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {MongoObservable, ObservableCursor} from 'meteor-rxjs';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs/Observable';
 
 const expect = chai.expect;
 
