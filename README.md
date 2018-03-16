@@ -30,7 +30,7 @@ Since this cursor observable is of RxJS’s type, every other methods and operat
 
 ```ts
 
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 import 'rxjs/add/operator/debounce';
 
