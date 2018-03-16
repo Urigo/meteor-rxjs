@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('meteor/mongo'), require('rxjs/Observable'), require('rxjs/Subject'), require('meteor/meteor'), require('meteor/tracker'), require('rxjs/Subscriber')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'meteor/mongo', 'rxjs/Observable', 'rxjs/Subject', 'meteor/meteor', 'meteor/tracker', 'rxjs/Subscriber'], factory) :
-	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.Mongo,global.rxjs.Observable,global.rxjs.Subject,global.Meteor,global.Tracker,global.rxjs.Subscriber));
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.Package.mongo,global.rxjs.Observable,global.rxjs.Subject,global.Package.meteor,global.Package.tracker,global.rxjs.Subscriber));
 }(this, (function (exports,mongo,Observable,Subject,meteor,tracker,Subscriber) { 'use strict';
 
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
