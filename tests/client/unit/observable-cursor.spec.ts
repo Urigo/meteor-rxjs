@@ -1,6 +1,6 @@
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {ObservableCursor, MongoObservable} from 'meteor-rxjs';
 
 import 'rxjs/add/operator/map';
@@ -9,9 +9,9 @@ import 'rxjs/add/operator/count';
 const expect = chai.expect;
 
 describe('ObservableCursor', function () {
-  let collection: Mongo.Collection;
-  let cursor: Mongo.Cursor;
-  let observable: ObservableCursor;
+  let collection: Mongo.Collection<any>;
+  let cursor: Mongo.Cursor<any>;
+  let observable: ObservableCursor<any>;
 
   beforeEach(function () {
     collection = new Mongo.Collection(null);

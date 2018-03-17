@@ -30,7 +30,7 @@ Since this cursor observable is of RxJS’s type, every other methods and operat
 
 ```ts
 
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 import 'rxjs/add/operator/debounce';
 
@@ -50,12 +50,12 @@ let observable = new MongoObservable.Collection(collection);
 collection.attachSchema(...); // with SimpleSchema package
 ```
 
-## Usage in Angular 2
+## Usage in Angular
 
-Angular 2 has tight integration with RxJS since Angular 2 is desinged to support reactive UI updates.
+Angular has tight integration with RxJS since Angular is desinged to support reactive UI updates.
 One of the realizations of this integration is `AsyncPipe`, which is supposed to be used with RxJS observables.
 
-In order to subscribe on the Mongo cursor observable's updates and iterate through the returned list of docs in Angular 2, one can use `AsyncPipe` in an Angular 2 component as follows:
+In order to subscribe on the Mongo cursor observable's updates and iterate through the returned list of docs in Angular, one can use `AsyncPipe` in an Angular component as follows:
 
 ```ts
 
@@ -74,7 +74,7 @@ class Tasks {
 ### Zone operator
 
 As you can see above we called `zone` method of the cursor observable. This is a special
-Zone operator that is implemeted by `meteor-rxjs` for the Angular 2 users' convenience.
+Zone operator that is implemeted by `meteor-rxjs` for the Angular users' convenience.
 This operator runs ngZone each time when new data arrives to the Mongo cursor observable,
 thus we force UI updates at the right time using it.
 

@@ -37,23 +37,22 @@
   },
   "homepage": "http://www.angular-meteor.com",
   "peerDependencies": {
-    "@types/meteor": "^1.4.6",
-    "babel-runtime": "^6.18.0 || ^6.26.0",
-    "rxjs": "^5.4.3 || ^5.0.1 || ^5.0.0-rc.4 || ^5.0.0-beta.12"
+    "@types/meteor": "^1.4.13",
+    "rxjs": "^5.4.3"
   },
   "devDependencies": {
     "@types/chai": "4.0.4",
-    "@types/meteor": "1.4.6",
+    "@types/meteor": "1.4.13",
     "@types/mocha": "2.2.43",
     "@types/underscore": "1.8.3",
     "conventional-changelog": "1.1.0",
     "conventional-changelog-cli": "1.2.0",
     "jsdoc-to-markdown": "3.0.0",
     "rollup": "0.49.3",
-    "rxjs": "5.4.3",
+    "rxjs": "5.5.7",
     "tslint": "5.7.0",
-    "typescript": "2.5.2",
-    "zone.js": "0.8.17"
+    "typescript": "2.7.2",
+    "zone.js": "0.8.20"
   },
   "greenkeeper": {
     "ignore": [
