@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('meteor/mongo'), require('rxjs/Observable'), require('rxjs/Subject'), require('meteor/meteor'), require('meteor/tracker'), require('rxjs/Subscriber')) :
-	typeof define === 'function' && define.amd ? define(['exports', 'meteor/mongo', 'rxjs/Observable', 'rxjs/Subject', 'meteor/meteor', 'meteor/tracker', 'rxjs/Subscriber'], factory) :
-	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.Package.mongo,global.rxjs.Observable,global.rxjs.Subject,global.Package.meteor,global.Package.tracker,global.rxjs.Subscriber));
-}(this, (function (exports,mongo,Observable,Subject,meteor,tracker,Subscriber) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/Observable'), require('rxjs/Subject'), require('rxjs/Subscriber')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'rxjs/Observable', 'rxjs/Subject', 'rxjs/Subscriber'], factory) :
+	(factory((global.meteor = global.meteor || {}, global.meteor.rxjs = {}),global.rxjs.Observable,global.rxjs.Subject,global.rxjs.Subscriber));
+}(this, (function (exports,Observable,Subject,Subscriber) { 'use strict';
 
 var subscribeEvents = ['onReady', 'onError', 'onStop'];
 function isMeteorCallbacks(callbacks) {
@@ -259,11 +259,11 @@ var ObservableCursor = /** @class */ (function (_super) {
          *  @constructor
          */
         function Collection(nameOrExisting, options) {
-            if (nameOrExisting instanceof mongo.Mongo.Collection) {
+            if (nameOrExisting instanceof Mongo.Collection) {
                 this._collection = nameOrExisting;
             }
             else {
-                this._collection = new mongo.Mongo.Collection(nameOrExisting, options);
+                this._collection = new Mongo.Collection(nameOrExisting, options);
             }
         }
         Object.defineProperty(Collection.prototype, "collection", {
@@ -534,7 +534,7 @@ var MeteorObservable = /** @class */ (function () {
         }
         var zone = forkZone();
         return Observable.Observable.create(function (observer) {
-            meteor.Meteor.call.apply(meteor.Meteor, [name].concat(args.concat([
+            Meteor.call.apply(Meteor, [name].concat(args.concat([
                 function (error, result) {
                     zone.run(function () {
                         error ? observer.error(error) :
@@ -613,7 +613,7 @@ var MeteorObservable = /** @class */ (function () {
         var zone = forkZone();
         var observers = [];
         var subscribe = function () {
-            return meteor.Meteor.subscribe.apply(meteor.Meteor, [name].concat(args.concat([{
+            return Meteor.subscribe.apply(Meteor, [name].concat(args.concat([{
                     onError: function (error) {
                         zone.run(function () {
                             observers.forEach(function (observer) { return observer.error(error); });
@@ -679,7 +679,7 @@ var MeteorObservable = /** @class */ (function () {
         var zone = forkZone();
         var observers = [];
         var autorun = function () {
-            return tracker.Tracker.autorun(function (computation) {
+            return Tracker.autorun(function (computation) {
                 zone.run(function () {
                     observers.forEach(function (observer) { return observer.next(computation); });
                 });
