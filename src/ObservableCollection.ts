@@ -1,5 +1,3 @@
-import { Mongo } from 'meteor/mongo';
-
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
 

@@ -1,4 +1,3 @@
-import { Mongo } from 'meteor/mongo';
 import { Observable } from 'rxjs/Observable';
 import { ObservableCursor } from './ObservableCursor';
 import { removeObserver } from './utils';

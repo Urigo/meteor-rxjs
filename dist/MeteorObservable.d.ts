@@ -1,4 +1,3 @@
-import { Tracker } from 'meteor/tracker';
 import { Observable } from 'rxjs/Observable';
 /**
  * This is a class with static methods that wrap Meteor's API and return RxJS
