@@ -1,8 +1,8 @@
 export default {
-  format: 'umd',
+  output: {
+    format: 'umd'
+  },
   globals: {
-    'rxjs/Observable':'rxjs.Observable',
-    'rxjs/Subject': 'rxjs.Subject',
-    'rxjs/Subscriber': 'rxjs.Subscriber'
+    'rxjs': 'rxjs'
   }
 };

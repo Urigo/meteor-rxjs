@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 var liveSubscriptions = [];
 function throwInvalidCallback(method) {

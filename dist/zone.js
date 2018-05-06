@@ -8,12 +8,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Subscriber';
+import { Subscriber } from 'rxjs';
 import { getZone } from './utils';
-export function zoneOperator(zone) {
-    return this.lift(new ZoneOperator(zone || getZone()));
-}
+export var zoneOperator = function (zone) { return function (source) { return source.lift(new ZoneOperator(zone || getZone())); }; };
 var ZoneOperator = /** @class */ (function () {
     function ZoneOperator(zone) {
         this.zone = zone;
@@ -50,5 +47,4 @@ var ZoneSubscriber = /** @class */ (function (_super) {
     };
     return ZoneSubscriber;
 }(Subscriber));
-Observable.prototype.zone = zoneOperator;
 //# sourceMappingURL=zone.js.map

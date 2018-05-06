@@ -1,7 +1,7 @@
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
-import {Observable} from 'rxjs/Observable';
-import {MeteorObservable, MongoObservable} from 'meteor-rxjs';
+import {Observable} from 'rxjs';
+import {MeteorObservable, MongoObservable,zoneOperator} from 'meteor-rxjs';
 
 import 'zone.js/dist/zone.js';
 
@@ -15,20 +15,15 @@ describe('ZoneOperator', () => {
     }
   });
 
-  it('Should exist on Observable', () => {
-    let obs = Observable.create();
-    expect(obs.zone).to.be.function;
-  });
-
   it('Should run in the expected zone on the next', done => {
     let gZone = Zone.current;
     let zone = Zone.current.fork({ name: 'ng'});
 
-    let obs = Observable.create(observer => {
+    let obs: Observable<any> = Observable.create(observer => {
       gZone.run(() => observer.next());
     });
     zone.run(() => {
-      obs.zone().subscribe(() => {
+      obs.pipe(zoneOperator()).subscribe(() => {
         expect(Zone.current).to.equal(zone);
         done();
       });
@@ -41,7 +36,7 @@ describe('ZoneOperator', () => {
       zone.run(() => {
         let subHandler = MeteorObservable.autorun().subscribe(() => {
           console.log(subHandler);
-          observable.find({}).zone().subscribe(() => {
+          observable.find({}).pipe(zoneOperator()).subscribe(() => {
             expect(Zone.current).to.equal(zone);
             subHandler.unsubscribe();
             done();

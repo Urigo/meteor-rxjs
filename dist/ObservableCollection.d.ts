@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ObservableCursor } from './ObservableCursor';
 import Selector = Mongo.Selector;
 import ObjectID = Mongo.ObjectID;

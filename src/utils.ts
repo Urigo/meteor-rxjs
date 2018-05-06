@@ -1,4 +1,4 @@
-import { Subscriber } from 'rxjs/Subscriber';
+import { Subscriber } from 'rxjs';
 
 declare let _;
 

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 /**
  * This is a class with static methods that wrap Meteor's API and return RxJS
  * Observables. The methods' signatures are the same as Meteor's, with the ]

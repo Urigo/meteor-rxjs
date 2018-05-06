@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 export declare class ObservableCursor<T> extends Observable<T[]> {
     private _zone;
     private _data;

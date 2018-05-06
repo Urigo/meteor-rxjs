@@ -30,13 +30,13 @@ Since this cursor observable is of RxJS’s type, every other methods and operat
 
 ```ts
 
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
-import 'rxjs/add/operator/debounce';
+import {debounce, map} from 'rxjs/operators';
 
 Tasks.find({checked: false})
-  .debounce(() => Observable.interval(50))
-  .map(tasks => tasks.length)
+  .pipe(debounce(() => Observable.interval(50)))
+  .pipe(map(tasks => tasks.length))
   .subscribe(todoCount => console.log(todoCount));
 
 ```
@@ -58,6 +58,7 @@ One of the realizations of this integration is `AsyncPipe`, which is supposed to
 In order to subscribe on the Mongo cursor observable's updates and iterate through the returned list of docs in Angular, one can use `AsyncPipe` in an Angular component as follows:
 
 ```ts
+import { MongoObservable, zoneOperator } from 'rxjs';
 
 const Tasks = new MongoObservable.Collection<Task>('tasks');
 
@@ -66,14 +67,14 @@ const Tasks = new MongoObservable.Collection<Task>('tasks');
   template: `<ul><li *ngFor="let task of tasks | async"></li></ul>`
 })
 class Tasks {
-  tasks = Tasks.find().zone();
+  tasks = Tasks.find().pipe(zoneOperator());
 }
 
 ````
 
 ### Zone operator
 
-As you can see above we called `zone` method of the cursor observable. This is a special
+As you can see above we called `zoneOperator` operator of the cursor observable. This is a special
 Zone operator that is implemeted by `meteor-rxjs` for the Angular users' convenience.
 This operator runs ngZone each time when new data arrives to the Mongo cursor observable,
 thus we force UI updates at the right time using it.
@@ -85,7 +86,8 @@ In this case we are using Zone operator as well:
 
 class List {
   tasks = Tasks.find()
-  .debounce(() => Observable.interval(50))
+  .pipe(zoneOperator())
+  .pipe(debounce(() => Observable.interval(50)))
   .zone();
 }
 

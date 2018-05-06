@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { Subscriber } from 'rxjs/Subscriber';
+import { Observable ,  Subscriber } from 'rxjs';
 
 import { isMeteorCallbacks, forkZone, removeObserver } from './utils';
 
